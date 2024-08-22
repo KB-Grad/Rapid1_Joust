@@ -9,9 +9,9 @@ public class PlayerMovement : MonoBehaviour
     private Vector2 moveVector = Vector2.zero;
     private Rigidbody2D rb = null;
     public float moveSpeed = 0;
-    private int rightClickCount = 0;
-    private int leftClickCount = 0;
-    private float[] speeds = {5, 10, 15, 20};
+    private int rightClickCount = 1;
+    private int leftClickCount = 1;
+    public float[] speeds = {0, 5, 10, 15, 20};
 
 
 
@@ -39,19 +39,39 @@ public class PlayerMovement : MonoBehaviour
     private void OnMovementPerformed(InputAction.CallbackContext value)
     {
 
-        //Vector2 inputVector = value.ReadValue<Vector2>();
         moveVector = value.ReadValue<Vector2>();
-        if (moveVector.x > 0)
+        if (moveVector.x > 0 && rightClickCount <= speeds.Length-1 )
         {
             rightClickCount++;
-            moveSpeed = speeds[rightClickCount-1];
-            leftClickCount = 0;
+            if (rightClickCount == 1)
+            {
+                moveSpeed = 0;
+                rightClickCount = 1;
+                leftClickCount = 1;
+            } 
+            if (rightClickCount > 1)
+            {
+                moveSpeed = speeds[rightClickCount - 1];
+                leftClickCount = 0;
+            }   
+            
+            
         }
-        if (moveVector.x < 0)
+        if (moveVector.x < 0 && leftClickCount <= speeds.Length-1)
         {
             leftClickCount++;
-            moveSpeed = speeds[leftClickCount-1];
-            rightClickCount = 0;
+            if (leftClickCount == 1)
+            {
+                moveSpeed = 0;
+                leftClickCount = 1;
+                rightClickCount = 1;
+            }
+            if (leftClickCount > 1)
+            {
+                moveSpeed = speeds[leftClickCount - 1];
+                rightClickCount = 0;
+            }
+            
         }
 
     }
