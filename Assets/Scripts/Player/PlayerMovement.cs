@@ -12,6 +12,7 @@ public class PlayerMovement : MonoBehaviour
     private int rightClickCount = 1;
     private int leftClickCount = 1;
     public float[] speeds = {0, 5, 10, 15, 20};
+    private bool isCollidedplatform = false;
 
 
 
@@ -38,7 +39,7 @@ public class PlayerMovement : MonoBehaviour
 
     private void OnMovementPerformed(InputAction.CallbackContext value)
     {
-
+        //this section handles the speed change
         moveVector = value.ReadValue<Vector2>();
         if (moveVector.x > 0 && rightClickCount <= speeds.Length-1 )
         {
@@ -76,7 +77,7 @@ public class PlayerMovement : MonoBehaviour
 
     }
 
-    // Change this to make it slide
+    // Change this to make it slide and not to stop
     private void OnMovementCancled(InputAction.CallbackContext value)
     {
         
@@ -85,14 +86,43 @@ public class PlayerMovement : MonoBehaviour
 
     private void FixedUpdate()
     {
+        int direction = 1;
+        if (isCollidedplatform == false)
+        {
+            direction = 1;
+        }
+        else
+        {
+            direction = -1;
+        }
         Vector2 horizontalMovement = new Vector2(moveVector.x, 0);
-        rb.velocity = horizontalMovement * moveSpeed;
+        rb.velocity = direction * (horizontalMovement * moveSpeed);
+        //Debug.Log(rb.velocity);
     }
 
     private void OnGravityPerformed(InputAction.CallbackContext value)
     {
         rb.gravityScale = - rb.gravityScale;
+        transform.Rotate(new Vector3(0, 0, 180));
     }
+
+    //Trying bouncy for the player where the player on collsion will start to move in oppsite direction at the same speed as collsion.
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (collision.gameObject.name == "Box")
+        {
+            isCollidedplatform = true;
+        }
+    }
+
+    private void OnCollisionExit2D(Collision2D collision)
+    {
+        if(collision.gameObject.name == "Box")
+        {
+            isCollidedplatform = false;
+        }
+    }
+
 
     // Start is called before the first frame update
     void Start()
