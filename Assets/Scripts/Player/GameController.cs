@@ -11,6 +11,7 @@ public class GameController : MonoBehaviour
     [SerializeField] int enemyValue;
     [SerializeField] GameObject scoreText;
     Vector3[] rebornPos = new Vector3[4];
+    Rigidbody2D rb;
     // Start is called before the first frame update
     void Start()
     {
@@ -27,10 +28,11 @@ public class GameController : MonoBehaviour
     {
         lives = 5;
         score = 0;
-        rebornPos[0] = new Vector3(1, 2, 0);
-        rebornPos[1] = new Vector3(-1, 2,0);
-        rebornPos[2] = new Vector3(1, -2, 0);
-        rebornPos[3] = new Vector3(-1, -2, 0);
+        rebornPos[0] = new Vector3(2, 3, 0);
+        rebornPos[1] = new Vector3(-2, 3,0);
+        rebornPos[2] = new Vector3(2, -1, 0);
+        rebornPos[3] = new Vector3(-2, -1, 0);
+        rb = this.GetComponent<Rigidbody2D>();
     }
 
     void scoreBoard()
