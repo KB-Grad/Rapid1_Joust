@@ -10,6 +10,11 @@ public class ScreenWrap : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+
+   
+
+
+
         myRigidbody = GetComponent<Rigidbody2D>();
     }
 
