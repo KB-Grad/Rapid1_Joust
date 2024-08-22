@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -5,6 +6,9 @@ using UnityEngine.InputSystem;
 
 public class PlayerMovement : MonoBehaviour
 {
+
+    public ParticleSystem playerPS;
+
     private CustomInputs input = null;
     private Vector2 moveVector = Vector2.zero;
     private Rigidbody2D rb = null;
@@ -55,7 +59,10 @@ public class PlayerMovement : MonoBehaviour
         }
 
     }
-
+    void PPS()//dusteffect
+    {
+        playerPS.Play();
+    }
     // Change this to make it slide
     private void OnMovementCancled(InputAction.CallbackContext value)
     {
@@ -71,6 +78,7 @@ public class PlayerMovement : MonoBehaviour
 
     private void OnGravityPerformed(InputAction.CallbackContext value)
     {
+        PPS();
         rb.gravityScale = - rb.gravityScale;
     }
 
@@ -86,3 +94,5 @@ public class PlayerMovement : MonoBehaviour
         
     }
 }
+
+
