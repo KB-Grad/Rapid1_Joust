@@ -13,7 +13,7 @@ public class PlayerMovement : MonoBehaviour
     private int leftClickCount = 1;
     public float[] speeds = {0, 5, 10, 15, 20};
     private bool isCollidedplatform = false;
-
+    private int direction = 1;
 
 
     private void Awake()
@@ -86,7 +86,6 @@ public class PlayerMovement : MonoBehaviour
 
     private void FixedUpdate()
     {
-        int direction = 1;
         if (isCollidedplatform == false)
         {
             direction = 1;
@@ -96,7 +95,7 @@ public class PlayerMovement : MonoBehaviour
             direction = -1;
         }
         Vector2 horizontalMovement = new Vector2(moveVector.x, 0);
-        rb.velocity = direction * (horizontalMovement * moveSpeed);
+        rb.velocity = (horizontalMovement * moveSpeed * (direction));
         //Debug.Log(rb.velocity);
     }
 
