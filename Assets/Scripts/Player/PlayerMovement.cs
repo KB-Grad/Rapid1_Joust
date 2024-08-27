@@ -9,11 +9,9 @@ public class PlayerMovement : MonoBehaviour
     private Vector2 moveVector = Vector2.zero;
     private Rigidbody2D rb = null;
     public float moveSpeed = 0;
-    private int rightClickCount = 1;
-    private int leftClickCount = 1;
+    public int rightClickCount = 1;
+    public int leftClickCount = 1;
     public float[] speeds = {0, 5, 10, 15, 20};
-    private bool isCollidedplatform = false;
-    //private int direction = 1;
 
 
     private void Awake()
@@ -50,8 +48,6 @@ public class PlayerMovement : MonoBehaviour
                 moveSpeed = 0;
                 rightClickCount = 1;
                 leftClickCount = 1;
-                Debug.Log("now");
-                Debug.Log(rightClickCount);
             } 
             if (rightClickCount > 1)
             {
@@ -92,7 +88,6 @@ public class PlayerMovement : MonoBehaviour
     {
         Vector2 horizontalMovement = new Vector2(moveVector.x, 0);
         rb.velocity = (horizontalMovement * moveSpeed);
-        //Debug.Log(rb.velocity);
     }
 
     private void OnGravityPerformed(InputAction.CallbackContext value)
@@ -106,36 +101,24 @@ public class PlayerMovement : MonoBehaviour
     {
         if (collision.gameObject.name == "Box")
         {
-            //isCollidedplatform = true;
             if (rightClickCount > 1)
             {
-                Debug.Log("enter right condition after collsion");
-                moveSpeed = -speeds[rightClickCount - 1];
+                moveSpeed =-1*moveSpeed;
                 leftClickCount = rightClickCount;
-                Debug.Log("Rightclick count befor setting it");
-                Debug.Log(rightClickCount);
                 rightClickCount = 0;
-
-                Debug.Log("Rightclick count after setting it");
-                Debug.Log(rightClickCount);
             }
             else if (leftClickCount > 1)
             {
-                Debug.Log("enter left condition after collsion");
-                moveSpeed = -speeds[leftClickCount - 1];
+                moveSpeed = -1 * moveSpeed;
                 rightClickCount = leftClickCount;
                 leftClickCount = 0;
-                //Debug.Log(leftClickCount);
             }
         }
     }
 
     private void OnCollisionExit2D(Collision2D collision)
     {
-        if(collision.gameObject.name == "Box")
-        {
-            isCollidedplatform = false;
-        }
+
 
     }
 
