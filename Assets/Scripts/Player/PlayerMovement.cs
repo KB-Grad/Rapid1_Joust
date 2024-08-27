@@ -12,6 +12,7 @@ public class PlayerMovement : MonoBehaviour
     public int rightClickCount = 1;
     public int leftClickCount = 1;
     public float[] speeds = {0, 5, 10, 15, 20};
+    public float jumpforce = 10;
 
 
     private void Awake()
@@ -26,6 +27,7 @@ public class PlayerMovement : MonoBehaviour
         input.Player.Movement.performed += OnMovementPerformed;
         input.Player.Movement.canceled += OnMovementCancled;
         input.Player.Gravity.performed += OnGravityPerformed;
+        input.Player.Jump.performed += OnJumpPerformed;
     }
 
     private void OnDisable()
@@ -33,6 +35,13 @@ public class PlayerMovement : MonoBehaviour
         input.Disable();
         input.Player.Movement.performed -= OnMovementPerformed;
         input.Player.Movement.canceled -= OnMovementCancled;
+        input.Player.Jump.performed -= OnJumpPerformed;
+    }
+
+    private void OnJumpPerformed(InputAction.CallbackContext value)
+    {
+        rb.velocity = new Vector2(rb.velocity.x, 0); 
+        rb.AddForce(new Vector2(0, jumpforce), ForceMode2D.Impulse);
     }
 
     private void OnMovementPerformed(InputAction.CallbackContext value)
@@ -46,6 +55,7 @@ public class PlayerMovement : MonoBehaviour
             if (rightClickCount == 1)
             {
                 moveSpeed = 0;
+                
                 rightClickCount = 1;
                 leftClickCount = 1;
             } 
@@ -87,7 +97,7 @@ public class PlayerMovement : MonoBehaviour
     private void FixedUpdate()
     {
         Vector2 horizontalMovement = new Vector2(moveVector.x, 0);
-        rb.velocity = (horizontalMovement * moveSpeed);
+        rb.velocity = new Vector2(horizontalMovement.x * moveSpeed, rb.velocity.y);
     }
 
     private void OnGravityPerformed(InputAction.CallbackContext value)
