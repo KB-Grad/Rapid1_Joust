@@ -13,7 +13,7 @@ public class PlayerMovement : MonoBehaviour
     private int leftClickCount = 1;
     public float[] speeds = {0, 5, 10, 15, 20};
     private bool isCollidedplatform = false;
-    private int direction = 1;
+    //private int direction = 1;
 
 
     private void Awake()
@@ -44,11 +44,14 @@ public class PlayerMovement : MonoBehaviour
         if (moveVector.x > 0 && rightClickCount <= speeds.Length-1 )
         {
             rightClickCount++;
+
             if (rightClickCount == 1)
             {
                 moveSpeed = 0;
                 rightClickCount = 1;
                 leftClickCount = 1;
+                Debug.Log("now");
+                Debug.Log(rightClickCount);
             } 
             if (rightClickCount > 1)
             {
@@ -60,6 +63,7 @@ public class PlayerMovement : MonoBehaviour
         }
         if (moveVector.x < 0 && leftClickCount <= speeds.Length-1)
         {
+            
             leftClickCount++;
             if (leftClickCount == 1)
             {
@@ -86,16 +90,8 @@ public class PlayerMovement : MonoBehaviour
 
     private void FixedUpdate()
     {
-        if (isCollidedplatform == false)
-        {
-            direction = 1;
-        }
-        else
-        {
-            direction = -1;
-        }
         Vector2 horizontalMovement = new Vector2(moveVector.x, 0);
-        rb.velocity = (horizontalMovement * moveSpeed * (direction));
+        rb.velocity = (horizontalMovement * moveSpeed);
         //Debug.Log(rb.velocity);
     }
 
@@ -110,7 +106,27 @@ public class PlayerMovement : MonoBehaviour
     {
         if (collision.gameObject.name == "Box")
         {
-            isCollidedplatform = true;
+            //isCollidedplatform = true;
+            if (rightClickCount > 1)
+            {
+                Debug.Log("enter right condition after collsion");
+                moveSpeed = -speeds[rightClickCount - 1];
+                leftClickCount = rightClickCount;
+                Debug.Log("Rightclick count befor setting it");
+                Debug.Log(rightClickCount);
+                rightClickCount = 0;
+
+                Debug.Log("Rightclick count after setting it");
+                Debug.Log(rightClickCount);
+            }
+            else if (leftClickCount > 1)
+            {
+                Debug.Log("enter left condition after collsion");
+                moveSpeed = -speeds[leftClickCount - 1];
+                rightClickCount = leftClickCount;
+                leftClickCount = 0;
+                //Debug.Log(leftClickCount);
+            }
         }
     }
 
@@ -120,6 +136,7 @@ public class PlayerMovement : MonoBehaviour
         {
             isCollidedplatform = false;
         }
+
     }
 
 
