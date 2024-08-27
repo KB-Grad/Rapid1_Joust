@@ -1,43 +1,47 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 //using DG.Tweening;
 
 public class Particle_Enemy : MonoBehaviour
 {
-    public GameObject MyEnemy;
-    public ParticleSystem ParticleSystem;
-    private Material _material;
+    GameObject MyEnemy;
+    GameObject model, down;
+    ParticleSystem particleSystem;
+    bool died = false;
     // Start is called before the first frame update
     void Start()
     {
-        _material = MyEnemy.GetComponent<Renderer>().material;
+        MyEnemy = transform.parent.gameObject;
+        model = MyEnemy.GetComponent<Transform>().Find("Model").gameObject;
+        down = MyEnemy.GetComponent<Transform>().Find("Down").gameObject;
 
-
+        particleSystem = MyEnemy.GetComponentInChildren<ParticleSystem>();
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetMouseButton(0))
-        {
-            Die();
+        if (particleSystem!= null) {
+            if (!particleSystem.isPlaying && died)
+            {
+                DestroyImmediate(MyEnemy);
+            }
         }
     }
 
-    private void Die()
+    private void OnCollisionEnter2D(Collision2D collision)
     {
-        //var s = DOTween.Sequence();
-        //s.Append(_material.DOFloat(30, "_Strength", 0.2f));
-        //s.AppendInterval(0.4f);
-        //s.AppendCallback(() =>
-        //{
-            GameObject.Destroy(MyEnemy);
-            ParticleSystem.Play();
-            //s.Append(_material.DOFade(30, "white", 0.2f));
-
-        //});
-
-
+        if(collision.collider.tag == "Player")
+        {
+            particleSystem.Play();
+            died = true;
+            Destroy(model);
+            Destroy(down);
+            transform.localScale = Vector3.zero;
+        }
     }
+
+
 }
