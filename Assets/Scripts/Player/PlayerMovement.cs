@@ -9,12 +9,10 @@ public class PlayerMovement : MonoBehaviour
     private Vector2 moveVector = Vector2.zero;
     private Rigidbody2D rb = null;
     public float moveSpeed = 0;
-    private int rightClickCount = 1;
-    private int leftClickCount = 1;
-    public float[] speeds = {0, 5, 10, 15, 20};
-    private bool isCollidedplatform = false;
-    private int direction = 1;
-    public ParticleSystem ParticleSystem;
+    public int rightClickCount = 1;
+    public int leftClickCount = 1;
+    public float[] speeds = { 0, 5, 10, 15, 20 };
+
 
     private void Awake()
     {
@@ -41,25 +39,27 @@ public class PlayerMovement : MonoBehaviour
     {
         //this section handles the speed change
         moveVector = value.ReadValue<Vector2>();
-        if (moveVector.x > 0 && rightClickCount <= speeds.Length-1 )
+        if (moveVector.x > 0 && rightClickCount <= speeds.Length - 1)
         {
             rightClickCount++;
+
             if (rightClickCount == 1)
             {
                 moveSpeed = 0;
                 rightClickCount = 1;
                 leftClickCount = 1;
-            } 
+            }
             if (rightClickCount > 1)
             {
                 moveSpeed = speeds[rightClickCount - 1];
                 leftClickCount = 0;
-            }   
-            
-            
+            }
+
+
         }
-        if (moveVector.x < 0 && leftClickCount <= speeds.Length-1)
+        if (moveVector.x < 0 && leftClickCount <= speeds.Length - 1)
         {
+
             leftClickCount++;
             if (leftClickCount == 1)
             {
@@ -72,7 +72,7 @@ public class PlayerMovement : MonoBehaviour
                 moveSpeed = speeds[leftClickCount - 1];
                 rightClickCount = 0;
             }
-            
+
         }
 
     }
@@ -80,58 +80,58 @@ public class PlayerMovement : MonoBehaviour
     // Change this to make it slide and not to stop
     private void OnMovementCancled(InputAction.CallbackContext value)
     {
-        
+
         //moveVector = Vector2.zero; 
     }
 
     private void FixedUpdate()
     {
-        if (isCollidedplatform == false)
-        {
-            direction = 1;
-        }
-        else
-        {
-            direction = -1;
-        }
         Vector2 horizontalMovement = new Vector2(moveVector.x, 0);
-        rb.velocity = (horizontalMovement * moveSpeed * (direction));
-        //Debug.Log(rb.velocity);
+        rb.velocity = (horizontalMovement * moveSpeed);
     }
 
     private void OnGravityPerformed(InputAction.CallbackContext value)
     {
-        rb.gravityScale = - rb.gravityScale;
+        rb.gravityScale = -rb.gravityScale;
         transform.Rotate(new Vector3(0, 0, 180));
     }
 
     //Trying bouncy for the player where the player on collsion will start to move in oppsite direction at the same speed as collsion.
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if (collision.gameObject.name == "Box")
+        if (collision.gameObject.name == "platform01")
         {
-            isCollidedplatform = true;
+            if (rightClickCount > 1)
+            {
+                moveSpeed = -1 * moveSpeed;
+                leftClickCount = rightClickCount;
+                rightClickCount = 0;
+            }
+            else if (leftClickCount > 1)
+            {
+                moveSpeed = -1 * moveSpeed;
+                rightClickCount = leftClickCount;
+                leftClickCount = 0;
+            }
         }
     }
 
     private void OnCollisionExit2D(Collision2D collision)
     {
-        if(collision.gameObject.name == "Box")
-        {
-            isCollidedplatform = false;
-        }
+
+
     }
 
 
     // Start is called before the first frame update
     void Start()
     {
-        
+
     }
 
     // Update is called once per frame
     void Update()
     {
-        
+
     }
 }
