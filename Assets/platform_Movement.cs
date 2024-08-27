@@ -5,8 +5,9 @@ using UnityEngine;
 public class platform_Movement : MonoBehaviour
 {
 
-    public Vector3 startPos;
-    public Vector3 endPos;
+    Vector3 startPos;
+    public Vector3 movePos;
+    Vector3 endPos;
     Rigidbody2D rb;
     public ContactFilter2D contactFilter;
     public float speed;
@@ -15,6 +16,8 @@ public class platform_Movement : MonoBehaviour
     void Start()
     {
         rb = transform.GetComponent<Rigidbody2D>();
+        startPos = transform.position;
+        endPos = transform.position + movePos;
     }
 
     // Update is called once per frame
