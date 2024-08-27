@@ -6,15 +6,17 @@ TagManager:
   tags:
   - Up
   - Down
+  - Ground
+  - Enemy
   layers:
   - Default
   - TransparentFX
   - Ignore Raycast
-  - Character
+  - 
   - Water
   - UI
-  - background
-  - Particle
+  - 
+  - 
   - 
   - 
   - 
@@ -42,7 +44,4 @@ TagManager:
   m_SortingLayers:
   - name: Default
     uniqueID: 0
-    locked: 0
-  - name: Player
-    uniqueID: 3005339291
     locked: 0
