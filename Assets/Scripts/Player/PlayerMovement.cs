@@ -14,7 +14,7 @@ public class PlayerMovement : MonoBehaviour
     public float[] speeds = {0, 5, 10, 15, 20};
     private bool isCollidedplatform = false;
     private int direction = 1;
-
+    public ParticleSystem ParticleSystem;
 
     private void Awake()
     {
