@@ -17,18 +17,18 @@ public class EnemyMovement : MonoBehaviour
     [Header("State Tracking")]
     [SerializeField] bool isSpawning = true;
     [SerializeField] bool isGrounded = true;
-    [SerializeField] bool isChasing = false;
-    GameObject chaseTarget;
     [SerializeField][Range(-1, 1)] int wanderDir_Vertical = 0;
 
     [Header("Characteristics")]
+    [SerializeField] private EnemyState currentState = EnemyState.WANDER;
     [SerializeField] public float scoreValue = 500;
     [SerializeField] Vector2 groundAccelleration = new Vector2(1, 1);
     [SerializeField] Vector2 airAccelleration = new Vector2(.5f, 1);
     [SerializeField] Vector2 wanderSpeedLimits = new Vector2(3.0f, 1.0f);
     [SerializeField] Vector2 chaseSpeedLimits = new Vector2(5.0f, 1.0f);
-    [SerializeField] float trackingAngle = 15f; // The max angle, in degrees, off of horizontal the player can be seen by this enemy
-    [SerializeField] float trackingDistance = 5f; // The furthest distance the player can be seen by this enemy
+    [SerializeField] float detectionAngle = 15f; // The max angle, in degrees, off of horizontal the player can be seen by this enemy
+    [SerializeField] float detectionDistance = 5f; // The furthest distance the player can be seen by this enemy
+    [SerializeField] float trackingDistance = 15f; // The furthest distance the player can be chased by this enemy
     [SerializeField][Range(0, 30)] float wanderDelay_UpperBound = 10f;
     [SerializeField][Range(0, 30)] float wanderDelay_LowerBound = 7f;
     float wanderTimer = 0f;
@@ -68,59 +68,97 @@ public class EnemyMovement : MonoBehaviour
             }
         }
         
+        // State Resolution
         int dir_Horizontal = 0;
         Vector2 newVelocity = Vector2.zero;
-        if (isChasing) // ----------------------- Chase State -----------------------
+        GameObject player = GameObject.FindGameObjectWithTag("Player");
+        Vector2 playerOffset = player.transform.position - transform.position;
+        float angleToPlayer = Mathf.Abs(Mathf.Asin(playerOffset.y / playerOffset.magnitude) * Mathf.Rad2Deg);
+        switch (currentState) 
         {
-            dir_Horizontal = (int)Mathf.Sign(chaseTarget.transform.position.x - transform.position.x);
-        }
-        else // ----------------------- Wander State -----------------------
-        {
-            // Update Horizontal Wander Timer
-            if (wanderTimer <= 0)
-            {
-                wanderDir_Vertical = UnityEngine.Random.Range(-1, 2);
-                print(wanderDir_Vertical);
-                wanderTimer = UnityEngine.Random.Range(wanderDelay_LowerBound, wanderDelay_UpperBound);
-            }
-            else 
-            {
-                wanderTimer -= Time.deltaTime;
-            }
+            case EnemyState.WANDER: // ----------------------- WANDER STATE -----------------------
+                // Update Horizontal Wander Timer
+                if (wanderTimer <= 0)
+                {
+                    wanderDir_Vertical = UnityEngine.Random.Range(-1, 2);
+                    print(wanderDir_Vertical);
+                    wanderTimer = UnityEngine.Random.Range(wanderDelay_LowerBound, wanderDelay_UpperBound);
+                }
+                else
+                {
+                    wanderTimer -= Time.deltaTime;
+                }
 
-            // If velocity is 0, pick a random direction to go in, otherwise, continue in the previous direction.
-            if (rb.velocity.x == 0f)
-            {
-                dir_Horizontal = (int)Mathf.Sign(UnityEngine.Random.Range(-1, 1));
-            }
-            else
-            {
-                dir_Horizontal = (int)Mathf.Sign(rb.velocity.x);
-            }
+                // If velocity is 0, pick a random direction to go in, otherwise, continue in the previous direction.
+                if (rb.velocity.x == 0f)
+                {
+                    dir_Horizontal = (int)Mathf.Sign(UnityEngine.Random.Range(-1, 1));
+                }
+                else
+                {
+                    dir_Horizontal = (int)Mathf.Sign(rb.velocity.x);
+                }
 
-            // Calculate Potential Velocity
-            Vector2 deltaV =
-                new Vector2(dir_Horizontal, Mathf.Clamp((isGrounded ? 1 : 0) + wanderDir_Vertical, -1, 1)) * // get the wander direction
-                (isGrounded ? groundAccelleration : airAccelleration) * // multiply it by the relevant acceleration
-                Time.deltaTime; // account for time
+                // Calculate Potential Velocity
+                Vector2 deltaV =
+                    new Vector2(dir_Horizontal, Mathf.Clamp((isGrounded ? 1 : 0) + wanderDir_Vertical, -1, 1)) * // get the wander direction
+                    (isGrounded ? groundAccelleration : airAccelleration) * // multiply it by the relevant acceleration
+                    Time.deltaTime; // account for time
 
-            // Horizontal
-            if (Mathf.Abs(rb.velocity.x + deltaV.x) < wanderSpeedLimits.x || (int)Mathf.Sign(rb.velocity.x * deltaV.x) == -1)
-                newVelocity += Vector2.right * (rb.velocity.x + deltaV.x);
-            else
-                newVelocity += Vector2.right * dir_Horizontal * wanderSpeedLimits.x;
+                // Horizontal
+                if (Mathf.Abs(rb.velocity.x + deltaV.x) < wanderSpeedLimits.x || (int)Mathf.Sign(rb.velocity.x * deltaV.x) == -1)
+                    newVelocity += Vector2.right * (rb.velocity.x + deltaV.x);
+                else
+                    newVelocity += Vector2.right * dir_Horizontal * wanderSpeedLimits.x;
 
-            // Vertical
-            if (Mathf.Abs(rb.velocity.y + deltaV.y) < wanderSpeedLimits.y || (int)Mathf.Sign(rb.velocity.y * deltaV.y) == -1)
-                newVelocity += Vector2.up * (rb.velocity.y + deltaV.y);
-            else
-                newVelocity += Vector2.up * wanderDir_Vertical * wanderSpeedLimits.y; // TODO:: need to consider vertical collisions.
+                // Vertical
+                if (Mathf.Abs(rb.velocity.y + deltaV.y) < wanderSpeedLimits.y || (int)Mathf.Sign(rb.velocity.y * deltaV.y) == -1)
+                    newVelocity += Vector2.up * (rb.velocity.y + deltaV.y);
+                else
+                    newVelocity += Vector2.up * wanderDir_Vertical * wanderSpeedLimits.y; // TODO:: need to consider vertical collisions.
 
-            // Set Velocity
-            print (newVelocity);
-            rb.velocity = newVelocity;
-        }
-        
+                // Set Velocity
+                rb.velocity = newVelocity;
+
+                // Check for Chase
+                
+                if (playerOffset.magnitude <= detectionDistance && 
+                    angleToPlayer < detectionAngle && 
+                    Mathf.Sign(playerOffset.x) * dir_Horizontal == 1) 
+                {
+                    currentState = EnemyState.CHASE;
+                }
+                break;
+
+            case EnemyState.CHASE: // ----------------------- CHASE STATE -----------------------
+                dir_Horizontal = (int)Mathf.Sign(player.transform.position.x - transform.position.x);
+                int chaseDir_Vertical = (int)Mathf.Sign(player.transform.position.y - transform.position.y);
+
+                deltaV = new Vector2(dir_Horizontal, chaseDir_Vertical) * // get the wander direction
+                    (isGrounded ? groundAccelleration : airAccelleration) * // multiply it by the relevant acceleration
+                    Time.deltaTime; // account for time
+
+                // Horizontal
+                if (Mathf.Abs(rb.velocity.x + deltaV.x) < chaseSpeedLimits.x || (int)Mathf.Sign(rb.velocity.x * deltaV.x) == -1)
+                    newVelocity += Vector2.right * (rb.velocity.x + deltaV.x);
+                else
+                    newVelocity += Vector2.right * dir_Horizontal * chaseSpeedLimits.x;
+
+                // Vertical
+                if (Mathf.Abs(rb.velocity.y + deltaV.y) < chaseSpeedLimits.y || (int)Mathf.Sign(rb.velocity.y * deltaV.y) == -1)
+                    newVelocity += Vector2.up * (rb.velocity.y + deltaV.y);
+                else
+                    newVelocity += Vector2.up * chaseDir_Vertical * chaseSpeedLimits.y; // TODO:: need to consider vertical collisions.
+
+                rb.velocity = newVelocity;
+
+                // Check for Wander
+                if (playerOffset.magnitude > trackingDistance) 
+                {
+                    currentState = EnemyState.WANDER;
+                }
+                break;
+        }        
     }
 
     public void Die()
@@ -139,4 +177,10 @@ public class EnemyMovement : MonoBehaviour
         // Cleanup
         Destroy(gameObject);
     }
+}
+
+enum EnemyState 
+{
+    WANDER,
+    CHASE
 }
