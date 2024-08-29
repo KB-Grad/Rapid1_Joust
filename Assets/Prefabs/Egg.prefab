@@ -72,9 +72,9 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 60
   m_Sprite: {fileID: 21300000, guid: 07ec1a48378dbba4fb53dc89aff79377, type: 3}
-  m_Color: {r: 0.9940729, g: 1, b: 0.3066038, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -131,8 +131,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cf9a20de8e2ad6949a96841c105fd318, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  enemyPrefab: {fileID: 3933766591659308199, guid: 1123e96795830e141a02307bbe0fb0c5, type: 3}
-  enemyPrefab02: {fileID: 3933766591659308199, guid: e86d0e9a8a98f4049832d8b9aee654ae, type: 3}
+  enemyPrefab: {fileID: 3933766591659308199, guid: 1b15842445cf4bd458bd316f2be67dbc, type: 3}
   countdownTimer: 5
   scoreValue: 500
 --- !u!61 &1821009047239533364
@@ -167,7 +166,7 @@ BoxCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0}
+  m_Offset: {x: -0.0018196553, y: -0.0040892735}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0, y: 0}
@@ -178,7 +177,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 0.5, y: 0.5}
+  m_Size: {x: 0.07419959, y: 0.13516812}
   m_EdgeRadius: 0
 --- !u!50 &5309073343482367257
 Rigidbody2D:

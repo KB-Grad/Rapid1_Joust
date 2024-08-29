@@ -129,7 +129,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 44a91f6104204c049ac9bd4330fafd67, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  eggPrefab: {fileID: 5493336517851254997, guid: d2e045355419ae84da33c6a290be2383, type: 3}
+  eggPrefab: {fileID: 0}
   groundCheckCollider: {fileID: 8053962762329720205}
   isSpawning: 1
   isGrounded: 1
@@ -5281,7 +5281,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 10
-  m_Sprite: {fileID: 21300000, guid: 9fed595b3100c424086a9c97a501f972, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 2e242a7f85595c549816a599db3a3552, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
