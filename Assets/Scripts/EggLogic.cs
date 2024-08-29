@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -11,10 +12,16 @@ public class EggLogic : MonoBehaviour
 {
     [Header("Prefab References")]
     [SerializeField] GameObject enemyPrefab;
+    GameController gc;
 
     [Header("Characteristics")]
     [SerializeField] float countdownTimer = 5f; // Enemy respawn timer in seconds
     [SerializeField] public float scoreValue = 500;
+
+    private void Start()
+    {
+        gc = GameObject.FindAnyObjectByType<GameController>();
+    }
 
 
     // Update is called once per frame
@@ -36,6 +43,17 @@ public class EggLogic : MonoBehaviour
             newEnemy.GetComponent<EnemyMovement>().scoreValue = 0;
 
             // Cleanup
+            Destroy(gameObject);
+        }
+    }
+
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (collision.gameObject.tag == "Player")
+        {
+            // Add Score to GameController
+            gc.AddScore(scoreValue);
+
             Destroy(gameObject);
         }
     }
