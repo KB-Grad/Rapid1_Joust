@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -10,7 +11,8 @@ public class GameController : MonoBehaviour
     [SerializeField] int score;
     [SerializeField] int enemyValue;
     [SerializeField] GameObject scoreText;
-    Vector3[] rebornPos = new Vector3[4];
+    Transform[] healthBar = new Transform[5];
+    Vector3[] rebornPos = new Vector3[3];
     Rigidbody2D rb;
     // Start is called before the first frame update
     void Start()
@@ -21,46 +23,54 @@ public class GameController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        scoreBoard();
+        //scoreBoard();
     }
 
     void start()
     {
         lives = 5;
         score = 0;
-        rebornPos[0] = new Vector3(2, 3, 0);
-        rebornPos[1] = new Vector3(-2, 3,0);
-        rebornPos[2] = new Vector3(2, -1, 0);
-        rebornPos[3] = new Vector3(-2, -1, 0);
+        rebornPos[0] = new Vector3(-1.3f, 0.14f, 0);
+        rebornPos[1] = new Vector3(0.07f, 0.4f,0);
+        rebornPos[2] = new Vector3(1.33f, -0.18f, 0);
+        //rebornPos[3] = new Vector3(-2, -1, 0);
         rb = this.GetComponent<Rigidbody2D>();
+        for (int i = 0; i < lives; i++)
+        {
+            healthBar[i] = GameObject.Find((i+1).ToString() + "_Lives").transform;
+            healthBar[i].gameObject.GetComponent<SpriteRenderer>().color = Color.white;
+        }
     }
 
-    void scoreBoard()
-    {
-        scoreText.GetComponent<Text>().text = "score:" + score.ToString();
-    }
     void reborn()
     {
         //Animate here
-        transform.position = rebornPos[Random.Range(0,4)];
+        transform.position = rebornPos[Random.Range(0,3)];
     }
 
-    private void OnTriggerEnter2D(Collider2D other)
+
+    private void OnCollisionEnter2D(Collision2D collision)
     {
         //score
-        if (other.tag == "Up")
+        if (collision.collider.tag == "Up")
         {
             score += enemyValue;
+            print("up");
         }
         //player spawn
 
-        if(other.tag == "Down")
+        if (collision.collider.tag == "Down")
         {
             lives--;
+            print("down");
+            healthBar[lives].gameObject.GetComponent<SpriteRenderer>().color = Color.clear;
             if (lives > 0)
             {
                 reborn();
             }
         }
     }
+
+
+
 }
