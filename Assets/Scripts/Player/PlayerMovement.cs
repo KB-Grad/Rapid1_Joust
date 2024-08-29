@@ -13,6 +13,7 @@ public class PlayerMovement : MonoBehaviour
     public int leftClickCount = 1;
     public float[] speeds = {0, 5, 10, 15, 20};
     public float jumpforce = 10;
+    public ParticleSystem particlesystem;
 
 
     private void Awake()
