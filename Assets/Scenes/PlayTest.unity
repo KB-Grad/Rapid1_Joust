@@ -564,7 +564,7 @@ Transform:
   m_GameObject: {fileID: 148947455}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 3.701, y: 0.7743, z: 0}
+  m_LocalPosition: {x: 2.897, y: 0.7743, z: 0}
   m_LocalScale: {x: 1.8682573, y: -3.0532858, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -2283,7 +2283,7 @@ Transform:
   m_GameObject: {fileID: 790188866}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -3.836, y: 0.728, z: 0}
+  m_LocalPosition: {x: -2.775, y: 0.728, z: 0}
   m_LocalScale: {x: 1.8682573, y: -3.0532858, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -2564,8 +2564,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   moveSpeed: 8
-  rightClickCount: 1
-  leftClickCount: 1
   speeds:
   - 0
   - 0.8
@@ -2573,7 +2571,8 @@ MonoBehaviour:
   - 2.8
   - 3.2
   jumpforce: 7
-  particlesystem: {fileID: 1541770471}
+  breakSpeed: 3
+  isCollision: 0
 --- !u!50 &1060975154
 Rigidbody2D:
   serializedVersion: 4
