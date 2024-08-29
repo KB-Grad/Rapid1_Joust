@@ -96,6 +96,7 @@ GameObject:
   - component: {fileID: 4989857580196764482}
   - component: {fileID: 1821009047239533364}
   - component: {fileID: 5309073343482367257}
+  - component: {fileID: 8242727646257135799}
   m_Layer: 0
   m_Name: Egg
   m_TagString: Enemy
@@ -206,3 +207,15 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 4
+--- !u!114 &8242727646257135799
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5493336517851254997}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 439b38c6dd510774693b2c67ea4845da, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

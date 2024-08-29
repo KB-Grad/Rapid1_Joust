@@ -129,7 +129,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 44a91f6104204c049ac9bd4330fafd67, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  eggPrefab: {fileID: 0}
+  eggPrefab: {fileID: 5493336517851254997, guid: d2e045355419ae84da33c6a290be2383, type: 3}
   groundCheckCollider: {fileID: 8053962762329720205}
   isSpawning: 1
   isGrounded: 1

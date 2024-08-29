@@ -92,7 +92,6 @@ GameObject:
   - component: {fileID: 3043481704893803034}
   - component: {fileID: 4707128269477993349}
   - component: {fileID: 3861615401115704193}
-  - component: {fileID: 1533621670379591856}
   m_Layer: 3
   m_Name: Enemy 1
   m_TagString: Enemy
@@ -130,7 +129,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 44a91f6104204c049ac9bd4330fafd67, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  eggPrefab: {fileID: 0}
+  eggPrefab: {fileID: 5493336517851254997, guid: d2e045355419ae84da33c6a290be2383, type: 3}
   groundCheckCollider: {fileID: 8053962762329720205}
   isSpawning: 1
   isGrounded: 1
@@ -321,18 +320,6 @@ EdgeCollider2D:
   m_AdjacentEndPoint: {x: 0, y: 0}
   m_UseAdjacentStartPoint: 0
   m_UseAdjacentEndPoint: 0
---- !u!114 &1533621670379591856
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3933766591659308199}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3ff7c0137d7e93b449c269804281b102, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &4289380920083949246
 GameObject:
   m_ObjectHideFlags: 0
