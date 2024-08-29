@@ -8,10 +8,11 @@ using UnityEngine.UI;
 public class GameController : MonoBehaviour
 {
 
+
     [SerializeField] int lives;
-    [SerializeField] int score;
-    [SerializeField] int enemyValue;
-    [SerializeField] GameObject scoreText;
+    [SerializeField] float score;
+    int enemyValue = 1;
+    [SerializeField] TMP_Text scoreText;
     Transform[] healthBar = new Transform[5];
     Vector3[] rebornPos = new Vector3[3];
     Rigidbody2D rb;
@@ -26,7 +27,7 @@ public class GameController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        //scoreBoard();
+        scoreBoard();
     }
 
     void start()
@@ -45,9 +46,15 @@ public class GameController : MonoBehaviour
         }
     }
 
+    void scoreBoard()
+    {
+        print("score:" + score);
+        print("scoreText:" + scoreText);
+        scoreText.text = score.ToString();
+    }
+
     void reborn()
     {
-        //Animate here
         transform.position = rebornPos[Random.Range(0,3)];
         GameObject node = Instantiate(RespawnPlatform, transform.position,Quaternion.identity);
         StartCoroutine(DelayToDeleteRespawn(delayInSeconds, node));
@@ -69,7 +76,7 @@ public class GameController : MonoBehaviour
         //score
         if (collision.collider.tag == "Up")
         {
-            score += enemyValue;
+            score += collision.gameObject.GetComponentInParent<EnemyMovement>().scoreValue;
             print("up");
         }
         //player spawn
