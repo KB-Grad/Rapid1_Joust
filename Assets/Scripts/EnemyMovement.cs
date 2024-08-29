@@ -161,21 +161,15 @@ public class EnemyMovement : MonoBehaviour
         }        
     }
 
-    public void Die()
+    public float Die()
     {
-        // Scoring
-        GameObject scoreController = GameObject.FindGameObjectWithTag("GameController");
-        if (scoreController != null)
-        {
-            // TODO:: Add scoreValue to the game controller's player score.
-        }
-
         // Spawn Egg
         GameObject newEgg = Instantiate(eggPrefab, transform.position, Quaternion.identity);
         newEgg.GetComponent<Rigidbody2D>().velocity = rb.velocity;
 
         // Cleanup
         Destroy(gameObject);
+        return (scoreValue);
     }
 }
 

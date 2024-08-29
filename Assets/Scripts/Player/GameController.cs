@@ -61,7 +61,7 @@ public class GameController : MonoBehaviour
         //score
         if (collision.collider.tag == "Up")
         {
-            score += collision.gameObject.GetComponentInParent<EnemyMovement>().scoreValue;
+            score += collision.gameObject.GetComponentInParent<EnemyMovement>().Die();
             print("up");
         }
         //player spawn
