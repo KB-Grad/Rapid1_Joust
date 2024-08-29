@@ -45,8 +45,10 @@ public class GameController : MonoBehaviour
 
     void scoreBoard()
     {
+        /*
         print("score:" + score);
         print("scoreText:" + scoreText);
+        */
         scoreText.text = score.ToString();
     }
 
@@ -55,7 +57,24 @@ public class GameController : MonoBehaviour
         transform.position = rebornPos[Random.Range(0,3)];
     }
 
+    public void AddScore(float newScore) 
+    {
+        score += newScore;
+        print("up");
+    }
 
+    public void KillPlayer() 
+    {
+        lives--;
+        print("down");
+        healthBar[lives].gameObject.GetComponent<SpriteRenderer>().color = Color.clear;
+        if (lives > 0)
+        {
+            reborn();
+        }
+    }
+
+    /*
     private void OnCollisionEnter2D(Collision2D collision)
     {
         //score
@@ -77,7 +96,5 @@ public class GameController : MonoBehaviour
             }
         }
     }
-
-
-
+    */
 }

@@ -12,7 +12,10 @@ public class EnemyMovement : MonoBehaviour
 
     [Header("Component References")]
     [SerializeField] Collider2D groundCheckCollider;
+    ParticleSystem ps;
+    GameObject model;
     Rigidbody2D rb;
+    GameController gc;
 
     [Header("State Tracking")]
     [SerializeField] bool isSpawning = true;
@@ -32,12 +35,16 @@ public class EnemyMovement : MonoBehaviour
     [SerializeField][Range(0, 30)] float wanderDelay_UpperBound = 10f;
     [SerializeField][Range(0, 30)] float wanderDelay_LowerBound = 7f;
     float wanderTimer = 0f;
+    [SerializeField]float killThreshold = .05f;
     [SerializeField] bool DEBUG_doDie = false;
 
     // Start is called before the first frame update
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
+        ps = GetComponentInChildren<ParticleSystem>();
+        model = transform.Find("Model").gameObject;
+        gc = GameObject.FindAnyObjectByType<GameController>();
     }
 
     // Update is called once per frame
@@ -161,15 +168,40 @@ public class EnemyMovement : MonoBehaviour
         }        
     }
 
-    public float Die()
+    public void Die()
     {
+        // Add Score to GameController
+        gc.AddScore(scoreValue);
+
         // Spawn Egg
         GameObject newEgg = Instantiate(eggPrefab, transform.position, Quaternion.identity);
         newEgg.GetComponent<Rigidbody2D>().velocity = rb.velocity;
 
         // Cleanup
         Destroy(gameObject);
-        return (scoreValue);
+    }
+
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (collision.gameObject.tag == "Player")
+        {
+            print(collision.gameObject.transform.position.y - transform.position.y);
+            if ((collision.gameObject.transform.position.y - transform.position.y) > killThreshold)
+            {
+                ps.transform.SetParent(transform.parent, true);
+                ps.Play();
+
+                Die();
+            }
+            else if ((collision.gameObject.transform.position.y - transform.position.y) < killThreshold)
+            {
+                gc.KillPlayer();
+            }
+            else 
+            {
+                // TODO:: Bounce off each other
+            }
+        } 
     }
 }
 
