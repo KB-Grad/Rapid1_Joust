@@ -5,6 +5,7 @@ using UnityEngine.InputSystem;
 
 public class PlayerMovement : MonoBehaviour
 {
+    Animator anim;
     private CustomInputs input = null;
     private Vector2 moveVector = Vector2.zero;
     private Rigidbody2D rb = null;
@@ -133,5 +134,6 @@ public class PlayerMovement : MonoBehaviour
     void Update()
     {
 
+        anim = GetComponent<Animator>();
     }
 }
