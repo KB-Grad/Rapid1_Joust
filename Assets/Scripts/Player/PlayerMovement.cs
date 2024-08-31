@@ -10,13 +10,16 @@ public class PlayerMovement : MonoBehaviour
     private Vector2 moveVector = Vector2.zero;
     private Rigidbody2D rb = null;
     public float moveSpeed = 0;
-    private int rightClickCount = 1;
-    private int leftClickCount = 1;
+    public int rightClickCount = 1;
+    public int leftClickCount = 1;
     public float[] speeds = {0, 5, 10, 15, 20};
     public float jumpforce = 10;
     private bool breaks = false;
     public float breakSpeed = 10;
     public bool isCollision = false;
+    private Coroutine speedCoroutine;
+    private Coroutine slowDownCoroutine;
+
 
 
     private void Awake()
@@ -42,6 +45,8 @@ public class PlayerMovement : MonoBehaviour
         input.Player.Jump.performed -= OnJumpPerformed;
     }
 
+
+
     private void OnJumpPerformed(InputAction.CallbackContext value)
     {
         rb.velocity = new Vector2(rb.velocity.x, 0); 
@@ -64,85 +69,121 @@ public class PlayerMovement : MonoBehaviour
         //Debug.Log(rb.velocity);
         if (moveSpeed <= 0)
         {
+            moveSpeed = 0;
             breaks = false;
+            moveVector.x = 0;
         }
     }
     private IEnumerator SlowDownCoroutine()
     {
-        breaks = true;
         while (breaks)
         {
             slowSpeed();
             yield return null; // Wait for the next frame
         }
     }
+    private IEnumerator waitForStop()
+    {
+        while (moveSpeed > 0)
+        {
+            yield return null;
+        }
+        // Start accelerating in the new direction
+        speedCoroutine = StartCoroutine(SpeedOverTime());
+    }
 
     private void OnMovementPerformed(InputAction.CallbackContext value)
     {
         //this section handles the speed change
         moveVector = value.ReadValue<Vector2>();
-        if (!breaks)
+        if (breaks)
         {
-            if (moveVector.x > 0 && rightClickCount <= speeds.Length - 1)
+            if (speedCoroutine != null)
+            {
+                StopCoroutine(speedCoroutine);
+                speedCoroutine = null;
+            }
+            StartCoroutine(waitForStop());
+        }
+        else
+        {
+            if (speedCoroutine != null)
+            {
+                StopCoroutine(speedCoroutine);
+            }
+            speedCoroutine = StartCoroutine(SpeedOverTime());
+        }
+
+    }
+
+    private IEnumerator SpeedOverTime()
+    {
+        while (!breaks)
+        {
+            if (moveVector.x > 0 && rightClickCount < speeds.Length)
             {
                 rightClickCount++;
-
-
                 if (rightClickCount == 1)
                 {
-                    //moveSpeed = 0;
                     breaks = true;
-                    StartCoroutine(SlowDownCoroutine());
-
-                    rightClickCount = 1;
+                    if (slowDownCoroutine != null)
+                    {
+                        StopCoroutine(slowDownCoroutine);
+                    }
+                    slowDownCoroutine = StartCoroutine(SlowDownCoroutine());
                     leftClickCount = 1;
+
+
                 }
-                if (rightClickCount > 1)
+                else
                 {
                     moveSpeed = speeds[rightClickCount - 1];
                     leftClickCount = 0;
                 }
-
-
             }
-            if (moveVector.x < 0 && leftClickCount <= speeds.Length - 1)
+            else if (moveVector.x < 0 && leftClickCount < speeds.Length)
             {
-
                 leftClickCount++;
                 if (leftClickCount == 1)
                 {
-                    //moveSpeed = 0;
                     breaks = true;
-                    StartCoroutine(SlowDownCoroutine());
-                    leftClickCount = 1;
-                     rightClickCount = 1;
+                    if (slowDownCoroutine != null)
+                    {
+                        StopCoroutine(slowDownCoroutine);
+                    }
+                    slowDownCoroutine = StartCoroutine(SlowDownCoroutine());
+                    rightClickCount = 1;
+
                 }
-                if (leftClickCount > 1)
+                else
                 {
                     moveSpeed = speeds[leftClickCount - 1];
                     rightClickCount = 0;
                 }
-
             }
+            yield return new WaitForSeconds(0.2f);
         }
-
     }
 
     // Change this to make it slide and not to stop
     private void OnMovementCancled(InputAction.CallbackContext value)
     {
-        
+
         //moveVector = Vector2.zero; 
+        if(speedCoroutine!=null)
+        {
+            StopCoroutine(speedCoroutine);
+            speedCoroutine = null;
+        }
     }
 
     private void FixedUpdate()
-    {
+    {   
         if (!breaks)
         {
             Vector2 horizontalMovement = new Vector2(moveVector.x, 0);
             rb.velocity = new Vector2(horizontalMovement.x * moveSpeed, rb.velocity.y);
         }
-
     }
 
     private void OnGravityPerformed(InputAction.CallbackContext value)
