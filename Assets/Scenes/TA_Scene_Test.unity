@@ -3309,6 +3309,45 @@ PrefabInstance:
       propertyPath: m_Name
       value: Enemy
       objectReference: {fileID: 0}
+<<<<<<< HEAD
+=======
+    - target: {fileID: 3933766591659308199, guid: 8b601e191d705634bb35b101adbee34e, type: 3}
+      propertyPath: m_Layer
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 5971499319905598281, guid: 8b601e191d705634bb35b101adbee34e, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5971499319905598281, guid: 8b601e191d705634bb35b101adbee34e, type: 3}
+      propertyPath: cruiseSpeed
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5971499319905598281, guid: 8b601e191d705634bb35b101adbee34e, type: 3}
+      propertyPath: acceleration
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 5971499319905598281, guid: 8b601e191d705634bb35b101adbee34e, type: 3}
+      propertyPath: maxMoveSpeed
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 6844479923328775648, guid: 8b601e191d705634bb35b101adbee34e, type: 3}
+      propertyPath: m_Layer
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 7273094655494585207, guid: 8b601e191d705634bb35b101adbee34e, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 0.8
+      objectReference: {fileID: 0}
+    - target: {fileID: 7273094655494585207, guid: 8b601e191d705634bb35b101adbee34e, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 0.8
+      objectReference: {fileID: 0}
+    - target: {fileID: 7273094655494585207, guid: 8b601e191d705634bb35b101adbee34e, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 0.8
+      objectReference: {fileID: 0}
+>>>>>>> parent of 03bb0dc (Update TA_Scene_Test.unity)
     - target: {fileID: 7273094655494585207, guid: 8b601e191d705634bb35b101adbee34e, type: 3}
       propertyPath: m_LocalPosition.x
       value: -1.167
@@ -8193,7 +8232,7 @@ ParticleSystemRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: -1289628005
-  m_SortingLayer: 0
+  m_SortingLayer: 1
   m_SortingOrder: -1
   m_RenderMode: 0
   m_MeshDistribution: 0
