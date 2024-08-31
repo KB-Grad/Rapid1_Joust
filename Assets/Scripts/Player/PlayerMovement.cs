@@ -55,7 +55,7 @@ public class PlayerMovement : MonoBehaviour
         if (!breaks)
         {
 
-            if (moveVector.x > 0)
+            if (moveVector.x > 0&&rightClickCount<speeds.Length)
             {
                 rightClickCount++;
                 if (rightClickCount == 1)
@@ -71,7 +71,7 @@ public class PlayerMovement : MonoBehaviour
                     leftClickCount = 0;
                 }
             }
-            if (moveVector.x < 0)
+            if (moveVector.x < 0&&leftClickCount<speeds.Length)
             {
                 leftClickCount++;
                 if (leftClickCount == 1)

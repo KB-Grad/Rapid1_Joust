@@ -635,12 +635,17 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   moveSpeed: 0
+  rightClickCount: 1
+  leftClickCount: 1
   speeds:
   - 0
-  - 5
-  - 10
-  - 15
-  - 20
+  - 1
+  - 2
+  - 3
+  - 4
+  jumpforce: 10
+  breakSpeed: 10
+  isCollision: 0
 --- !u!50 &1060975154
 Rigidbody2D:
   serializedVersion: 4
@@ -656,7 +661,7 @@ Rigidbody2D:
   m_Mass: 1
   m_LinearDrag: 0
   m_AngularDrag: 0.05
-  m_GravityScale: 50
+  m_GravityScale: 5
   m_Material: {fileID: 0}
   m_IncludeLayers:
     serializedVersion: 2
