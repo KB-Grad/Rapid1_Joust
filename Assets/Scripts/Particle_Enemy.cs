@@ -8,7 +8,7 @@ public class Particle_Enemy : MonoBehaviour
 {
     GameObject MyEnemy;
     GameObject model, down;
-    ParticleSystem particleSystem;
+    new ParticleSystem particleSystem;
     bool died = false;
     // Start is called before the first frame update
     void Start()
