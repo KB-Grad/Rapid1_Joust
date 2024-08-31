@@ -17,6 +17,7 @@ public class PlayerMovement : MonoBehaviour
     private bool breaks = false;
     public float breakSpeed = 10;
     public bool isCollision = false;
+
     private Coroutine speedCoroutine;
     private Coroutine slowDownCoroutine;
 
@@ -31,6 +32,7 @@ public class PlayerMovement : MonoBehaviour
     private void OnEnable()
     {
         input.Enable();
+        input.Player.Movement.started += OnMovementStarted;
         input.Player.Movement.performed += OnMovementPerformed;
         input.Player.Movement.canceled += OnMovementCancled;
         //input.Player.Gravity.performed += OnGravityPerformed;
@@ -40,11 +42,78 @@ public class PlayerMovement : MonoBehaviour
     private void OnDisable()
     {
         input.Disable();
+        input.Player.Movement.started -= OnMovementStarted;
         input.Player.Movement.performed -= OnMovementPerformed;
         input.Player.Movement.canceled -= OnMovementCancled;
         input.Player.Jump.performed -= OnJumpPerformed;
     }
 
+    private void OnMovementStarted(InputAction.CallbackContext value)
+    {
+        moveVector = value.ReadValue<Vector2>();
+
+        if (!breaks)
+        {
+
+            if (moveVector.x > 0)
+            {
+                rightClickCount++;
+                if (rightClickCount == 1)
+                {
+                    breaks = true;
+
+                    slowDownCoroutine = StartCoroutine(SlowDownCoroutine());
+                    leftClickCount = 1;
+                }
+                else
+                {
+                    moveSpeed = speeds[rightClickCount - 1];
+                    leftClickCount = 0;
+                }
+            }
+            if (moveVector.x < 0)
+            {
+                leftClickCount++;
+                if (leftClickCount == 1)
+                {
+                    breaks = true;
+
+                    slowDownCoroutine = StartCoroutine(SlowDownCoroutine());
+                    rightClickCount = 1;
+                }
+                else
+                {
+                    moveSpeed = speeds[leftClickCount - 1];
+                    rightClickCount = 0;
+                }
+            }
+        }
+
+    }
+
+    private void OnMovementPerformed(InputAction.CallbackContext value)
+    {
+        //this section handles the speed change
+        moveVector = value.ReadValue<Vector2>();
+        if (false)
+        {
+            if (speedCoroutine != null)
+            {
+                StopCoroutine(speedCoroutine);
+                speedCoroutine = null;
+            }
+            StartCoroutine(waitForStop());
+        }
+        else
+        {
+            if (speedCoroutine != null)
+            {
+                StopCoroutine(speedCoroutine);
+            }
+            speedCoroutine = StartCoroutine(SpeedOverTime());
+        }
+
+    }
 
 
     private void OnJumpPerformed(InputAction.CallbackContext value)
@@ -92,32 +161,12 @@ public class PlayerMovement : MonoBehaviour
         speedCoroutine = StartCoroutine(SpeedOverTime());
     }
 
-    private void OnMovementPerformed(InputAction.CallbackContext value)
-    {
-        //this section handles the speed change
-        moveVector = value.ReadValue<Vector2>();
-        if (breaks)
-        {
-            if (speedCoroutine != null)
-            {
-                StopCoroutine(speedCoroutine);
-                speedCoroutine = null;
-            }
-            StartCoroutine(waitForStop());
-        }
-        else
-        {
-            if (speedCoroutine != null)
-            {
-                StopCoroutine(speedCoroutine);
-            }
-            speedCoroutine = StartCoroutine(SpeedOverTime());
-        }
 
-    }
 
     private IEnumerator SpeedOverTime()
     {
+        breaks = false;
+        moveSpeed = 0;
         while (!breaks)
         {
             if (moveVector.x > 0 && rightClickCount < speeds.Length)
@@ -125,12 +174,8 @@ public class PlayerMovement : MonoBehaviour
                 rightClickCount++;
                 if (rightClickCount == 1)
                 {
-                    breaks = true;
-                    if (slowDownCoroutine != null)
-                    {
-                        StopCoroutine(slowDownCoroutine);
-                    }
-                    slowDownCoroutine = StartCoroutine(SlowDownCoroutine());
+                    rightClickCount++;
+                    moveSpeed = speeds[rightClickCount - 1];
                     leftClickCount = 1;
 
 
