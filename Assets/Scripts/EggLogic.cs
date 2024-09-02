@@ -20,7 +20,8 @@ public class EggLogic : MonoBehaviour
 
     private void Start()
     {
-        gc = GameObject.FindAnyObjectByType<GameController>();
+        gc = GameObject.FindObjectOfType<GameController>();
+       //gc = GameObject.FindAnyObjectByType<GameController>();
     }
 
 
