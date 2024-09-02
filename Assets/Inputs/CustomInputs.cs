@@ -33,7 +33,7 @@ public partial class @CustomInputs: IInputActionCollection2, IDisposable
                     ""id"": ""2c907c75-b43a-4caf-9829-bf3ba8f307c6"",
                     ""expectedControlType"": ""Vector2"",
                     ""processors"": """",
-                    ""interactions"": """",
+                    ""interactions"": ""Hold"",
                     ""initialStateCheck"": true
                 },
                 {
