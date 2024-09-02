@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class GameController : MonoBehaviour
@@ -15,6 +16,8 @@ public class GameController : MonoBehaviour
     Rigidbody2D rb;
     GameObject[] newEnemies = new GameObject[4];
     GameObject[] enemyParent = new GameObject[2];
+    public GameObject RespawnPlatform;
+    public float delayInSeconds;
 
     // Start is called before the first frame update
     void Start()
@@ -55,6 +58,17 @@ public class GameController : MonoBehaviour
     void reborn()
     {
         transform.position = rebornPos[Random.Range(0,3)];
+        //add platform respawn
+        GameObject node = Instantiate(RespawnPlatform, transform.position, Quaternion.identity);
+        StartCoroutine(DelayToDeleteRespawn(delayInSeconds, node));
+    }
+
+    IEnumerator DelayToDeleteRespawn(float delayInSeconds, GameObject node)
+    {
+        yield return new WaitForSeconds(delayInSeconds);
+
+        // delete respawn point
+        GameObject.Destroy(node, 0.2f);
     }
 
     public void AddScore(float newScore) 
@@ -71,6 +85,10 @@ public class GameController : MonoBehaviour
         if (lives > 0)
         {
             reborn();
+        }
+        else
+        {
+            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
         }
     }
 
