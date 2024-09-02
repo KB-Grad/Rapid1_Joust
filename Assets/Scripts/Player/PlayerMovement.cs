@@ -14,11 +14,14 @@ public class PlayerMovement : MonoBehaviour
     public float[] speeds = {0, 5, 10, 15, 20};
     public float jumpforce = 10;
 
+    AudioController audioController; 
+
 
     private void Awake()
     {
         input = new CustomInputs();
         rb = GetComponent<Rigidbody2D>();
+        audioController = GameObject.FindGameObjectWithTag("Audio").GetComponent<AudioController>();
     }
 
     private void OnEnable()
@@ -42,6 +45,7 @@ public class PlayerMovement : MonoBehaviour
     {
         rb.velocity = new Vector2(rb.velocity.x, 0); 
         rb.AddForce(new Vector2(0, jumpforce), ForceMode2D.Impulse);
+       
     }
 
     private void OnMovementPerformed(InputAction.CallbackContext value)
@@ -102,6 +106,7 @@ public class PlayerMovement : MonoBehaviour
 
     private void OnGravityPerformed(InputAction.CallbackContext value)
     {
+        audioController.PlaySFX(audioController.gravitySwitch);
         rb.gravityScale = - rb.gravityScale;
         transform.Rotate(new Vector3(0, 0, 180));
     }
@@ -123,6 +128,12 @@ public class PlayerMovement : MonoBehaviour
                 rightClickCount = leftClickCount;
                 leftClickCount = 0;
             }
+             
+        }
+
+        if (collision.gameObject.name == "Enemy")
+        {
+            audioController.PlaySFX(audioController.enemyCollide);
         }
     }
 

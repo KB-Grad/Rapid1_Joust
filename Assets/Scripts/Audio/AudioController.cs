@@ -8,8 +8,12 @@ public class AudioController : MonoBehaviour
     [SerializeField] AudioSource musicSource;
     [SerializeField] AudioSource SFXSource;
 
+
     [Header ("------ Audio Clip ------")]
-    public AudioClip gravitySwitch; 
+    public AudioClip gravitySwitch;
+    public AudioClip enemyCollide;
+    public AudioClip enemySpawn;
+   
 
     void Start()
     {
@@ -20,5 +24,10 @@ public class AudioController : MonoBehaviour
     void Update()
     {
         
+    }
+
+    public void PlaySFX(AudioClip clip)
+    {
+        SFXSource.PlayOneShot(clip);
     }
 }
