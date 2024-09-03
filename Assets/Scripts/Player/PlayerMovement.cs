@@ -13,7 +13,7 @@ public class PlayerMovement : MonoBehaviour
     public int rightClickCount = 1;
     public int leftClickCount = 1;
     public float[] speeds = { 0, 5, 10, 15, 20 };
-
+    
 
     private void Awake()
     {
@@ -127,13 +127,14 @@ public class PlayerMovement : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-
+        anim = GetComponent<Animator>();
     }
+
+    private enum playerState {attack, movenment, standby,Gravity};
 
     // Update is called once per frame
     void Update()
     {
 
-        anim = GetComponent<Animator>();
     }
 }
