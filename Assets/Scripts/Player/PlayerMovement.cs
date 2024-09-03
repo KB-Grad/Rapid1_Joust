@@ -175,7 +175,7 @@ public class PlayerMovement : MonoBehaviour
     private IEnumerator SpeedOverTime()
     {
 
-       breaks = false;
+        breaks = false;
         moveSpeed = 0;
         while (!breaks)
         {
