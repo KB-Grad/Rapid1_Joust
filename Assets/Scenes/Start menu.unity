@@ -1504,7 +1504,7 @@ GameObject:
   - component: {fileID: 1711679651}
   - component: {fileID: 1711679652}
   m_Layer: 0
-  m_Name: Light 2D (2)
+  m_Name: Reflection Light
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1895,7 +1895,7 @@ GameObject:
   - component: {fileID: 2098507981}
   - component: {fileID: 2098507982}
   m_Layer: 0
-  m_Name: Light 2D (1)
+  m_Name: Screen Light
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
