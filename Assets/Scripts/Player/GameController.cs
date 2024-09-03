@@ -51,7 +51,7 @@ public class GameController : MonoBehaviour
 
     void scoreBoard()
     {
-        //scoreText.text = score.ToString();
+        scoreText.text = score.ToString();
     }
 
     void reborn()
