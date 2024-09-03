@@ -53,6 +53,7 @@ public class GameController : MonoBehaviour
     void reborn()
     {
         transform.position = rebornPos[Random.Range(0,rebornPos.Length)].position;
+        GetComponent<PlayerMovement>().resetPlayer();
         //add platform respawn
         // GameObject node = Instantiate(RespawnPlatform, transform.position, Quaternion.identity);
         // StartCoroutine(DelayToDeleteRespawn(delayInSeconds, node));

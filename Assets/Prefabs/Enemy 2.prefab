@@ -145,7 +145,7 @@ MonoBehaviour:
   trackingDistance: 5
   wanderDelay_UpperBound: 10
   wanderDelay_LowerBound: 7
-  killThreshold: 0.05
+  killThreshold: 0.06
   DEBUG_doDie: 0
   floatPoint: {fileID: 8507753148117325142, guid: 7f81b2ecd9f70794fa2d1ee758c1c10d, type: 3}
 --- !u!114 &7835412324153153034
@@ -220,7 +220,7 @@ Rigidbody2D:
   m_Mass: 1
   m_LinearDrag: 0
   m_AngularDrag: 0.05
-  m_GravityScale: 0.1
+  m_GravityScale: 0.05
   m_Material: {fileID: 6200000, guid: 08e98465af1e69f469ca3eea6f9572b0, type: 2}
   m_IncludeLayers:
     serializedVersion: 2
