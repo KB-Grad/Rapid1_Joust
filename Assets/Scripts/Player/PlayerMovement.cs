@@ -24,11 +24,18 @@ public class PlayerMovement : MonoBehaviour
     private Coroutine speedCoroutine;
     private Coroutine slowDownCoroutine;
 
+    //add animator
+    Animator Animator;
+    bool right;
+    bool stop;
+    bool attack;
+
 
     private void Awake()
     {
         input = new CustomInputs();
         rb = GetComponent<Rigidbody2D>();
+
     }
 
     private void OnEnable()
@@ -329,12 +336,14 @@ public class PlayerMovement : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        //add animator
+        Animator = GetComponent<Animator>();
         
     }
 
     // Update is called once per frame
     void Update()
     {
-        
+        Animator.SetFloat("speed", moveSpeed);
     }
 }
