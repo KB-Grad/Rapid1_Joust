@@ -6,9 +6,11 @@ using UnityEngine.InputSystem;
 
 public class PlayerMovement : MonoBehaviour
 {
+    Animator anim;
     private CustomInputs input = null;
     private Vector2 moveVector = Vector2.zero;
     private Rigidbody2D rb = null;
+
     public float moveSpeed = 0;
     public int rightClickCount = 1;
     public int leftClickCount = 1;
@@ -53,6 +55,7 @@ public class PlayerMovement : MonoBehaviour
 
     private void OnMovementStarted(InputAction.CallbackContext value)
     {
+        anim.SetFloat("speed", moveSpeed);
         moveVector = value.ReadValue<Vector2>();
 
         if (!breaks)
@@ -88,6 +91,7 @@ public class PlayerMovement : MonoBehaviour
                 {
                     moveSpeed = speeds[leftClickCount - 1];
                     rightClickCount = 0;
+                   
                 }
             }
         }
@@ -310,12 +314,13 @@ public class PlayerMovement : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
+        rb = GetComponent<Rigidbody2D>();
+        anim = GetComponent<Animator>();
     }
 
     // Update is called once per frame
     void Update()
     {
-        
+       
     }
 }
