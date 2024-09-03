@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using Unity.VisualScripting;
+using UnityEditor.Rendering;
 using UnityEngine;
 
 public class EnemySpawner : MonoBehaviour
@@ -13,6 +14,8 @@ public class EnemySpawner : MonoBehaviour
     Wave currentWave = null;
     [SerializeField] float spawnDelay = .5f;
     float spawnTimer = 0f;
+    GameObject temp = null;
+
 
     // Update is called once per frame
     void Update()
@@ -38,6 +41,7 @@ public class EnemySpawner : MonoBehaviour
             {
                 if (currentWave.enemies.Count > 0)
                 {
+                    int i = 0;
                     // Pick the next spawn location
                     Transform spawnPoint;
                     do
@@ -47,10 +51,11 @@ public class EnemySpawner : MonoBehaviour
                     lastSpawnPoint = spawnPoint;
 
                     // Spawn the enemy
-                    Instantiate(currentWave.enemies[0], spawnPoint.position, Quaternion.identity);
+                    temp = Instantiate(currentWave.enemies[0], spawnPoint.position, Quaternion.identity);
+                    temp.GetComponent<Rigidbody2D>().constraints = RigidbodyConstraints2D.FreezeAll;
+                    Invoke("delay", 3);
+                    //temp.GetComponent<Rigidbody2D>().constraints = RigidbodyConstraints2D.FreezeRotation;
                     currentWave.enemies.RemoveAt(0);
-
-                    // Restart the spawn timer
                     spawnTimer = spawnDelay;
                 }
                 else 
@@ -61,9 +66,28 @@ public class EnemySpawner : MonoBehaviour
             else 
             {
                 spawnTimer -= Time.deltaTime;
-                print(spawnTimer);
+                //print(spawnTimer);
             }
         }
+    }
+
+    void delay()
+    {
+        temp.GetComponent<Rigidbody2D>().constraints = RigidbodyConstraints2D.FreezeRotation;
+    }
+
+    void enemyProjection(GameObject obj)
+    {
+        /*float delayed = Time.time;
+        obj.GetComponent<Rigidbody2D>().Sleep();
+        for (float tm = Time.time; delayed >= 300f; delayed = Time.time - tm)
+        {
+            if (delayed % 1 == 0)
+            {
+                obj.GetComponent<SpriteRenderer>().color = Color.Lerp(Color.white, Color.green, 1f);
+            }
+        }
+        obj.GetComponent<Rigidbody2D>().WakeUp();*/
     }
 
     [System.Serializable]
