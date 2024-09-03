@@ -292,7 +292,7 @@ public class PlayerMovement : MonoBehaviour
                 leftClickCount = 0;
             }
         }
-        if (collision.gameObject.tag == "Enemy" && collision.gameObject.name== "Enemy 1")
+        if (collision.gameObject.tag == "Enemy" && (collision.gameObject.name== "Enemy 1"|| collision.gameObject.name == "Enemy 1(Clone)"))
         {
 
             float killTreshold=collision.gameObject.GetComponent<EnemyMovement>().killThreshold;
