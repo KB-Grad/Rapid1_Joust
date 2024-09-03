@@ -35,8 +35,9 @@ public class EnemyMovement : MonoBehaviour
     [SerializeField][Range(0, 30)] float wanderDelay_UpperBound = 10f;
     [SerializeField][Range(0, 30)] float wanderDelay_LowerBound = 7f;
     float wanderTimer = 0f;
-    [SerializeField]float killThreshold = .05f;
+    public float killThreshold = .05f;
     [SerializeField] bool DEBUG_doDie = false;
+
 
 
     //add Floatpoints
