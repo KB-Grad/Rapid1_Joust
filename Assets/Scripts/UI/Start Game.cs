@@ -12,4 +12,11 @@ public class StartGame : MonoBehaviour
 
 
     }
+
+    public void ReStartMenu()
+    {
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex - 1);
+
+
+    }
 }

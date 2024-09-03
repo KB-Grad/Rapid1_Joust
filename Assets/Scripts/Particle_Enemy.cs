@@ -9,11 +9,13 @@ public class Particle_Enemy : MonoBehaviour
     GameObject MyEnemy;
     GameObject model, down;
     new ParticleSystem particleSystem;
+    GameObject Player;
     bool died = false;
     // Start is called before the first frame update
     void Start()
     {
         MyEnemy = transform.parent.gameObject;
+        Player = transform.parent.gameObject;
         model = MyEnemy.GetComponent<Transform>().Find("Model").gameObject;
         down = MyEnemy.GetComponent<Transform>().Find("Down").gameObject;
 
@@ -27,7 +29,7 @@ public class Particle_Enemy : MonoBehaviour
             if (!particleSystem.isPlaying && died)
             {
                 DestroyImmediate(MyEnemy);
-            }
+            } 
         }
     }
 

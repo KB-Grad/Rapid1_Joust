@@ -44,7 +44,8 @@ public class EnemyMovement : MonoBehaviour
         rb = GetComponent<Rigidbody2D>();
         ps = GetComponentInChildren<ParticleSystem>();
         model = transform.Find("Model").gameObject;
-        gc = GameObject.FindAnyObjectByType<GameController>();
+        gc = GameObject.FindObjectOfType<GameController>();
+        //gc = GameObject.FindAnyObjectByType<GameController>();
     }
 
     // Update is called once per frame
