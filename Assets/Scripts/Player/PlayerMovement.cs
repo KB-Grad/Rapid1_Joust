@@ -25,7 +25,6 @@ public class PlayerMovement : MonoBehaviour
     private Coroutine slowDownCoroutine;
 
 
-
     private void Awake()
     {
         input = new CustomInputs();
@@ -97,7 +96,7 @@ public class PlayerMovement : MonoBehaviour
     private void OnMovementPerformed(InputAction.CallbackContext value)
     {
         moveVector = value.ReadValue<Vector2>();
-        if (false)
+        if (breaks)
         {
             if (speedCoroutine != null)
             {
@@ -151,7 +150,6 @@ public class PlayerMovement : MonoBehaviour
         {
             moveSpeed = 0;
             breaks = false;
-            moveVector.x = 0;
         }
     }
     private IEnumerator SlowDownCoroutine()
@@ -175,16 +173,19 @@ public class PlayerMovement : MonoBehaviour
 
     private IEnumerator SpeedOverTime()
     {
+
         breaks = false;
         moveSpeed = 0;
         while (!breaks)
         {
             if (moveVector.x > 0 && rightClickCount < speeds.Length)
             {
+
                 rightClickCount++;
                 if (rightClickCount == 1)
                 {
                     rightClickCount++;
+                    
                     moveSpeed = speeds[rightClickCount - 1];
                     leftClickCount = 1;
 
@@ -201,12 +202,9 @@ public class PlayerMovement : MonoBehaviour
                 leftClickCount++;
                 if (leftClickCount == 1)
                 {
-                    breaks = true;
-                    if (slowDownCoroutine != null)
-                    {
-                        StopCoroutine(slowDownCoroutine);
-                    }
-                    slowDownCoroutine = StartCoroutine(SlowDownCoroutine());
+                    leftClickCount++;
+                    moveSpeed= speeds[leftClickCount - 1];
+
                     rightClickCount = 1;
 
                 }
@@ -264,13 +262,12 @@ public class PlayerMovement : MonoBehaviour
             transform.Rotate(new Vector3(0, 0, 180));
             gTimer = 0;
         }
-
     }
 
     //Trying bouncy for the player where the player on collsion will start to move in oppsite direction at the same speed as collsion.
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if (collision.gameObject.name == "Box")
+        if (collision.gameObject.name == "Box" || collision.gameObject.tag == "Ground")
         {
             if(breaks)
             {
@@ -292,8 +289,28 @@ public class PlayerMovement : MonoBehaviour
                 leftClickCount = 0;
             }
         }
+        if (collision.gameObject.tag == "Enemy")
+        {
+
+            if (rightClickCount > 1)
+            {
+                moveVector.x = -moveVector.x;
+                //moveSpeed =-1*moveSpeed;
+                leftClickCount = rightClickCount;
+                rightClickCount = 0;
+            }
+            else if (leftClickCount > 1)
+            {
+                moveVector.x = -moveVector.x;
+                //moveSpeed = -1 * moveSpeed;
+                rightClickCount = leftClickCount;
+                leftClickCount = 0;
+            }
+        }
 
     }
+
+
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.gameObject.name == "GSwitch")
