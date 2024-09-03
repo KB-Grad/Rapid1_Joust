@@ -4375,6 +4375,10 @@ PrefabInstance:
       propertyPath: speeds.Array.data[4]
       value: 3
       objectReference: {fileID: 0}
+    - target: {fileID: 4175226246725765426, guid: 9986180d8f2b608498fd90925b963a10, type: 3}
+      propertyPath: RespawnPlatform
+      value: 
+      objectReference: {fileID: 978308934}
     - target: {fileID: 7852074197882430088, guid: 9986180d8f2b608498fd90925b963a10, type: 3}
       propertyPath: m_Name
       value: Player

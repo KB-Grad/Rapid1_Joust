@@ -139,13 +139,13 @@ MonoBehaviour:
   groundAccelleration: {x: 1, y: 1}
   airAccelleration: {x: 0.35, y: 1}
   wanderSpeedLimits: {x: 5, y: 0.5}
-  chaseSpeedLimits: {x: 7, y: 0.5}
+  chaseSpeedLimits: {x: 7, y: 2}
   detectionAngle: 15
   detectionDistance: 5
   trackingDistance: 5
   wanderDelay_UpperBound: 10
   wanderDelay_LowerBound: 7
-  killThreshold: 0.03
+  killThreshold: 0.05
   DEBUG_doDie: 0
 --- !u!114 &7835412324153153034
 MonoBehaviour:
@@ -202,7 +202,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 0.13178173, y: 0.09874739}
+  m_Size: {x: 0.1, y: 0.09874739}
   m_EdgeRadius: 0
 --- !u!50 &3043481704893803034
 Rigidbody2D:
