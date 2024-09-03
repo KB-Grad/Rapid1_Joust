@@ -264,13 +264,12 @@ public class PlayerMovement : MonoBehaviour
             transform.Rotate(new Vector3(0, 0, 180));
             gTimer = 0;
         }
-
     }
 
     //Trying bouncy for the player where the player on collsion will start to move in oppsite direction at the same speed as collsion.
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if (collision.gameObject.name == "Box")
+        if (collision.gameObject.name == "Box" || collision.gameObject.tag == "Ground")
         {
             if(breaks)
             {
