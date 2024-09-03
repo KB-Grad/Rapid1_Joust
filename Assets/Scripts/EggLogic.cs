@@ -18,6 +18,9 @@ public class EggLogic : MonoBehaviour
     [SerializeField] float countdownTimer = 5f; // Enemy respawn timer in seconds
     [SerializeField] public float scoreValue = 500;
 
+    //add Floatpoints
+    public GameObject floatPoint;
+
     private void Start()
     {
         gc = GameObject.FindObjectOfType<GameController>();
@@ -37,7 +40,9 @@ public class EggLogic : MonoBehaviour
             if (scoreController != null)
             {
                 // TODO:: Add scoreValue to the game controller's player score.
+                
             }
+
 
             // Spawn knight on current location
             GameObject newEnemy = Instantiate(enemyPrefab, transform.position, Quaternion.identity);
@@ -45,6 +50,7 @@ public class EggLogic : MonoBehaviour
 
             // Cleanup
             Destroy(gameObject);
+
         }
     }
 
@@ -54,7 +60,8 @@ public class EggLogic : MonoBehaviour
         {
             // Add Score to GameController
             gc.AddScore(scoreValue);
-
+            //Show Floatpoint score
+            Instantiate(floatPoint, transform.position, Quaternion.identity);
             Destroy(gameObject);
         }
     }

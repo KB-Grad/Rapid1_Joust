@@ -38,6 +38,11 @@ public class EnemyMovement : MonoBehaviour
     [SerializeField]float killThreshold = .05f;
     [SerializeField] bool DEBUG_doDie = false;
 
+
+    //add Floatpoints
+    public GameObject floatPoint;
+
+
     // Start is called before the first frame update
     void Start()
     {
@@ -170,6 +175,9 @@ public class EnemyMovement : MonoBehaviour
 
     public void Die()
     {
+        // Add floatpoints
+        Instantiate(floatPoint, transform.position,Quaternion.identity);
+
         // Add Score to GameController
         gc.AddScore(scoreValue);
 
