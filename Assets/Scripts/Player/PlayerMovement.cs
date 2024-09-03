@@ -24,6 +24,7 @@ public class PlayerMovement : MonoBehaviour
     private Coroutine speedCoroutine;
     private Coroutine slowDownCoroutine;
 
+    EnemyMovement em;
 
     private void Awake()
     {
@@ -310,10 +311,12 @@ public class PlayerMovement : MonoBehaviour
 
     }
 
-    private void resetPlayer()
+    public void resetPlayer()
     {
         moveVector = Vector3.zero;
         moveSpeed = 0;
+        leftClickCount = 1;
+        rightClickCount = 1;
     }
 
     private void OnTriggerEnter2D(Collider2D collision)

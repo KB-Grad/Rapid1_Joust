@@ -201,7 +201,7 @@ public class EnemyMovement : MonoBehaviour
 
                 Die();
             }
-            else if ((collision.gameObject.transform.position.y - transform.position.y) < killThreshold)
+            else if ((collision.gameObject.transform.position.y - transform.position.y) < -killThreshold)
             {
                 gc.KillPlayer();
             }
