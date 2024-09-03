@@ -289,7 +289,7 @@ public class PlayerMovement : MonoBehaviour
                 leftClickCount = 0;
             }
         }
-        if (collision.gameObject.tag == "Enemy")
+        if (collision.gameObject.tag == "Enemy" && collision.gameObject.name== "Enemy 1")
         {
 
             if (rightClickCount > 1)
@@ -310,6 +310,11 @@ public class PlayerMovement : MonoBehaviour
 
     }
 
+    private void resetPlayer()
+    {
+        moveVector = Vector3.zero;
+        moveSpeed = 0;
+    }
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
