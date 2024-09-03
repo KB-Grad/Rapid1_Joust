@@ -200,7 +200,7 @@ public class EnemyMovement : MonoBehaviour
             }
             else 
             {
-                // TODO:: Bounce off each other
+                rb.velocity = Vector2.left * rb.velocity + Vector2.up * rb.velocity;
             }
         } 
     }

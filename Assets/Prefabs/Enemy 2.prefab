@@ -145,7 +145,7 @@ MonoBehaviour:
   trackingDistance: 5
   wanderDelay_UpperBound: 10
   wanderDelay_LowerBound: 7
-  killThreshold: 0.05
+  killThreshold: 0.03
   DEBUG_doDie: 0
 --- !u!114 &7835412324153153034
 MonoBehaviour:
