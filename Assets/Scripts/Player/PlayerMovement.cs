@@ -25,7 +25,6 @@ public class PlayerMovement : MonoBehaviour
     private Coroutine slowDownCoroutine;
 
 
-
     private void Awake()
     {
         input = new CustomInputs();
@@ -290,8 +289,28 @@ public class PlayerMovement : MonoBehaviour
                 leftClickCount = 0;
             }
         }
+        if (collision.gameObject.tag == "Enemy")
+        {
+
+            if (rightClickCount > 1)
+            {
+                moveVector.x = -moveVector.x;
+                //moveSpeed =-1*moveSpeed;
+                leftClickCount = rightClickCount;
+                rightClickCount = 0;
+            }
+            else if (leftClickCount > 1)
+            {
+                moveVector.x = -moveVector.x;
+                //moveSpeed = -1 * moveSpeed;
+                rightClickCount = leftClickCount;
+                leftClickCount = 0;
+            }
+        }
 
     }
+
+
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.gameObject.name == "GSwitch")
