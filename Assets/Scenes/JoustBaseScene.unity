@@ -2727,6 +2727,54 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!1 &1069282976 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 7852074197882430088, guid: 9986180d8f2b608498fd90925b963a10, type: 3}
+  m_PrefabInstance: {fileID: 1480418579}
+  m_PrefabAsset: {fileID: 0}
+--- !u!66 &1069282984
+CompositeCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1069282976}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_ForceSendLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ForceReceiveLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ContactCaptureLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_CallbackLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  m_GeometryType: 0
+  m_GenerationType: 0
+  m_EdgeRadius: 0
+  m_ColliderPaths: []
+  m_CompositePaths:
+    m_Paths: []
+  m_VertexDistance: 0.0005
+  m_OffsetDistance: 0.00005
+  m_UseDelaunayMesh: 0
+  m_CompositeGameObject: {fileID: 1069282976}
 --- !u!1 &1088974764
 GameObject:
   m_ObjectHideFlags: 0
@@ -4531,6 +4579,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1311447121318347380, guid: 9986180d8f2b608498fd90925b963a10, type: 3}
+      propertyPath: m_UsedByEffector
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 1904929807011669115, guid: 9986180d8f2b608498fd90925b963a10, type: 3}
       propertyPath: m_LocalScale.x
       value: 1
@@ -4583,21 +4635,9 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 3860997304711266065, guid: 9986180d8f2b608498fd90925b963a10, type: 3}
-      propertyPath: speeds.Array.data[1]
-      value: 0.75
-      objectReference: {fileID: 0}
-    - target: {fileID: 3860997304711266065, guid: 9986180d8f2b608498fd90925b963a10, type: 3}
-      propertyPath: speeds.Array.data[2]
-      value: 1.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 3860997304711266065, guid: 9986180d8f2b608498fd90925b963a10, type: 3}
-      propertyPath: speeds.Array.data[3]
-      value: 2.25
-      objectReference: {fileID: 0}
-    - target: {fileID: 3860997304711266065, guid: 9986180d8f2b608498fd90925b963a10, type: 3}
-      propertyPath: speeds.Array.data[4]
-      value: 3
+    - target: {fileID: 2083838027640442216, guid: 9986180d8f2b608498fd90925b963a10, type: 3}
+      propertyPath: m_UsedByComposite
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4175226246725765426, guid: 9986180d8f2b608498fd90925b963a10, type: 3}
       propertyPath: scoreText
@@ -4607,6 +4647,26 @@ PrefabInstance:
       propertyPath: RespawnPlatform
       value: 
       objectReference: {fileID: 978308934}
+    - target: {fileID: 4175226246725765426, guid: 9986180d8f2b608498fd90925b963a10, type: 3}
+      propertyPath: rebornPos.Array.size
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 4175226246725765426, guid: 9986180d8f2b608498fd90925b963a10, type: 3}
+      propertyPath: rebornPos.Array.data[0]
+      value: 
+      objectReference: {fileID: 978308935}
+    - target: {fileID: 4175226246725765426, guid: 9986180d8f2b608498fd90925b963a10, type: 3}
+      propertyPath: rebornPos.Array.data[1]
+      value: 
+      objectReference: {fileID: 829672265}
+    - target: {fileID: 4175226246725765426, guid: 9986180d8f2b608498fd90925b963a10, type: 3}
+      propertyPath: rebornPos.Array.data[2]
+      value: 
+      objectReference: {fileID: 1088974765}
+    - target: {fileID: 4175226246725765426, guid: 9986180d8f2b608498fd90925b963a10, type: 3}
+      propertyPath: rebornPos.Array.data[3]
+      value: 
+      objectReference: {fileID: 1327735977}
     - target: {fileID: 7852074197882430088, guid: 9986180d8f2b608498fd90925b963a10, type: 3}
       propertyPath: m_Name
       value: Player
@@ -4614,7 +4674,10 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 7852074197882430088, guid: 9986180d8f2b608498fd90925b963a10, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1069282984}
   m_SourcePrefab: {fileID: 100100000, guid: 9986180d8f2b608498fd90925b963a10, type: 3}
 --- !u!1 &1504854029
 GameObject:
@@ -4671,10 +4734,10 @@ Camera:
   m_LensShift: {x: 0, y: 0}
   m_NormalizedViewPortRect:
     serializedVersion: 2
-    x: 0.57340723
+    x: 0.21579431
     y: 0
-    width: 0.19021237
-    height: 0.29470673
+    width: 0.5674931
+    height: 1
   near clip plane: 0.3
   far clip plane: 1000
   field of view: 60
