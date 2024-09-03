@@ -29,7 +29,6 @@ public class GameController : MonoBehaviour
     void Update()
     {
         scoreBoard();
-        enemySpawn();
     }
 
     void start()
@@ -52,7 +51,7 @@ public class GameController : MonoBehaviour
 
     void scoreBoard()
     {
-        scoreText.text = score.ToString();
+        //scoreText.text = score.ToString();
     }
 
     void reborn()
@@ -91,40 +90,4 @@ public class GameController : MonoBehaviour
             SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
         }
     }
-
-    void enemySpawn()
-    {
-        if(GameObject.FindGameObjectWithTag("Enemy") == null)
-        {
-            for(int i = 0; i < 4 ; i++)
-            {
-                newEnemies[i] = Instantiate(enemyParent[Random.Range(0, 2)], rebornPos[i], Quaternion.identity);
-                newEnemies[i].gameObject.tag = "Enemy";
-            }
-        }
-    } 
-
-    /*
-    private void OnCollisionEnter2D(Collision2D collision)
-    {
-        //score
-        if (collision.collider.tag == "Up")
-        {
-            score += collision.gameObject.GetComponentInParent<EnemyMovement>().Die();
-            print("up");
-        }
-        //player spawn
-
-        if (collision.collider.tag == "Down")
-        {
-            lives--;
-            print("down");
-            healthBar[lives].gameObject.GetComponent<SpriteRenderer>().color = Color.clear;
-            if (lives > 0)
-            {
-                reborn();
-            }
-        }
-    }
-    */
 }
