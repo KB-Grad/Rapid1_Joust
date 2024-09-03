@@ -145,7 +145,7 @@ MonoBehaviour:
   trackingDistance: 5
   wanderDelay_UpperBound: 10
   wanderDelay_LowerBound: 7
-  killThreshold: 0.05
+  killThreshold: 0.1
   DEBUG_doDie: 0
   floatPoint: {fileID: 8507753148117325142, guid: 7f81b2ecd9f70794fa2d1ee758c1c10d, type: 3}
 --- !u!114 &7835412324153153034
@@ -5141,7 +5141,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &7298165104389788055
 Transform:
   m_ObjectHideFlags: 0
@@ -5151,7 +5151,7 @@ Transform:
   m_GameObject: {fileID: 5941692105195950495}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 0.1279, z: 0}
   m_LocalScale: {x: 0.099999994, y: 0.099999994, z: 0.099999994}
   m_ConstrainProportionsScale: 1
   m_Children: []
