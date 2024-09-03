@@ -97,7 +97,7 @@ public class PlayerMovement : MonoBehaviour
     private void OnMovementPerformed(InputAction.CallbackContext value)
     {
         moveVector = value.ReadValue<Vector2>();
-        if (false)
+        if (breaks)
         {
             if (speedCoroutine != null)
             {
@@ -151,7 +151,6 @@ public class PlayerMovement : MonoBehaviour
         {
             moveSpeed = 0;
             breaks = false;
-            moveVector.x = 0;
         }
     }
     private IEnumerator SlowDownCoroutine()
@@ -175,16 +174,19 @@ public class PlayerMovement : MonoBehaviour
 
     private IEnumerator SpeedOverTime()
     {
-        breaks = false;
+
+       breaks = false;
         moveSpeed = 0;
         while (!breaks)
         {
             if (moveVector.x > 0 && rightClickCount < speeds.Length)
             {
+
                 rightClickCount++;
                 if (rightClickCount == 1)
                 {
                     rightClickCount++;
+                    
                     moveSpeed = speeds[rightClickCount - 1];
                     leftClickCount = 1;
 
@@ -201,12 +203,9 @@ public class PlayerMovement : MonoBehaviour
                 leftClickCount++;
                 if (leftClickCount == 1)
                 {
-                    breaks = true;
-                    if (slowDownCoroutine != null)
-                    {
-                        StopCoroutine(slowDownCoroutine);
-                    }
-                    slowDownCoroutine = StartCoroutine(SlowDownCoroutine());
+                    leftClickCount++;
+                    moveSpeed= speeds[leftClickCount - 1];
+
                     rightClickCount = 1;
 
                 }
