@@ -8,10 +8,13 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Start menu.unity
     guid: bc8c58da91ec4ce42aa7775f55210bca
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/TA_Scene_Test.unity
     guid: 8c9cfa26abfee488c85f1582747f6a02
   - enabled: 1
-    path: Assets/Scenes/Dead.unity
-    guid: da35eacccb439b04bb726a50c27cb3dd
+    path: Assets/Scenes/PlayTest.unity
+    guid: d2320c4803bfcb8498c7df813ef1febd
+  - enabled: 1
+    path: Assets/Scenes/End menu.unity
+    guid: 57075353822cd1345b9b78f42e50e4df
   m_configObjects: {}
