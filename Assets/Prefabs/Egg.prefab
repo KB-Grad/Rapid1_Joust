@@ -72,7 +72,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 60
+  m_SortingOrder: 100
   m_Sprite: {fileID: 21300000, guid: 07ec1a48378dbba4fb53dc89aff79377, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -4967,6 +4967,7 @@ MonoBehaviour:
   enemyPrefab: {fileID: 3933766591659308199, guid: 1b15842445cf4bd458bd316f2be67dbc, type: 3}
   countdownTimer: 5
   scoreValue: 500
+  floatPoint: {fileID: 8507753148117325142, guid: 7f81b2ecd9f70794fa2d1ee758c1c10d, type: 3}
 --- !u!61 &1821009047239533364
 BoxCollider2D:
   m_ObjectHideFlags: 0
