@@ -55,7 +55,7 @@ public class PlayerMovement : MonoBehaviour
 
     private void OnMovementStarted(InputAction.CallbackContext value)
     {
-        anim.SetFloat("speed", moveSpeed);
+        
         moveVector = value.ReadValue<Vector2>();
 
         if (!breaks)
@@ -179,7 +179,8 @@ public class PlayerMovement : MonoBehaviour
     private IEnumerator SpeedOverTime()
     {
 
-       breaks = false;
+       
+        breaks = false;
         moveSpeed = 0;
         while (!breaks)
         {
@@ -236,7 +237,8 @@ public class PlayerMovement : MonoBehaviour
     }
 
     private void FixedUpdate()
-    {   
+    {
+        anim.SetFloat("speed", moveSpeed);
         if (!breaks)
         {
             Vector2 horizontalMovement = new Vector2(moveVector.x, 0);
