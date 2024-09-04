@@ -11,12 +11,14 @@ public class GameController : MonoBehaviour
     [SerializeField] float score;
     [SerializeField] TMP_Text scoreText;
     Transform[] healthBar = new Transform[5];
+    [SerializeField] ParticleSystem playerDeathParticleSystem;
     [SerializeField] Transform[] rebornPos;
-    Rigidbody2D rb;
     GameObject[] newEnemies = new GameObject[4];
     GameObject[] enemyParent = new GameObject[2];
     public GameObject RespawnPlatform;
     public float delayInSeconds;
+    Rigidbody2D rb;
+    AudioController ac;
 
     // Start is called before the first frame update
     void Start()
@@ -37,6 +39,7 @@ public class GameController : MonoBehaviour
         enemyParent[0] = GameObject.Find("EnemyParent1");
         enemyParent[1] = GameObject.Find("EnemyParent2");
         rb = this.GetComponent<Rigidbody2D>();
+        ac = FindAnyObjectByType<AudioController>();
         for (int i = 0; i < lives; i++)
         {
             healthBar[i] = GameObject.Find((i+1).ToString() + "_Lives").transform;
@@ -80,6 +83,9 @@ public class GameController : MonoBehaviour
         healthBar[lives].gameObject.GetComponent<SpriteRenderer>().color = Color.clear;
         if (lives > 0)
         {
+            if (playerDeathParticleSystem)
+                Instantiate(playerDeathParticleSystem, transform.position, Quaternion.identity);
+            ac?.PlaySFX(ac.playerDeath);
             reborn();
         }
         else

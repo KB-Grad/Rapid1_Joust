@@ -22,6 +22,7 @@ public class EnemyMovement : MonoBehaviour
     [SerializeField] bool isSpawning = true;
     [SerializeField] bool isGrounded = true;
     [SerializeField][Range(-1, 1)] int wanderDir_Vertical = 0;
+    [SerializeField] int orientation = 1; // 1 is right-side up, -1 is upside-down
 
     [Header("Characteristics")]
     [SerializeField] private EnemyState currentState = EnemyState.WANDER;
@@ -39,26 +40,28 @@ public class EnemyMovement : MonoBehaviour
     public float killThreshold = .05f;
     [SerializeField] bool DEBUG_doDie = false;
 
-
-
     //add Floatpoints
     public GameObject floatPoint;
-
 
     // Start is called before the first frame update
     void Start()
     {
+        // Get Component References
         rb = GetComponent<Rigidbody2D>();
         ps = GetComponentInChildren<ParticleSystem>();
         model = transform.Find("Model").gameObject;
         gc = GameObject.FindObjectOfType<GameController>();
-        //gc = GameObject.FindAnyObjectByType<GameController>();
+
+        // Determine Orientation
+        orientation = (int)Mathf.Sign(UnityEngine.Random.Range(-1,1));
+        rb.gravityScale = rb.gravityScale * orientation;
+        transform.localScale = new Vector2(transform.localScale.x, transform.localScale.y * orientation);
     }
 
     // Update is called once per frame
     void Update()
     {
-        // DEBUG check if dying logic works
+        // DEBUG - check if dying logic works
         if (DEBUG_doDie)
         {
             Die();
@@ -135,7 +138,6 @@ public class EnemyMovement : MonoBehaviour
                 rb.velocity = newVelocity;
 
                 // Check for Chase
-                
                 if (playerOffset.magnitude <= detectionDistance && 
                     angleToPlayer < detectionAngle && 
                     Mathf.Sign(playerOffset.x) * dir_Horizontal == 1) 
@@ -146,7 +148,7 @@ public class EnemyMovement : MonoBehaviour
 
             case EnemyState.CHASE: // ----------------------- CHASE STATE -----------------------
                 dir_Horizontal = (int)Mathf.Sign(player.transform.position.x - transform.position.x);
-                int chaseDir_Vertical = (int)Mathf.Sign(player.transform.position.y + (Mathf.Sign(transform.localScale.y) * killThreshold * 2) - transform.position.y);
+                int chaseDir_Vertical = (int)Mathf.Sign(player.transform.position.y - transform.position.y + orientation * killThreshold * 2);
 
                 deltaV = new Vector2(dir_Horizontal, chaseDir_Vertical) * // get the wander direction
                     (isGrounded ? groundAccelleration : airAccelleration) * // multiply it by the relevant acceleration
@@ -162,7 +164,7 @@ public class EnemyMovement : MonoBehaviour
                 if (Mathf.Abs(rb.velocity.y + deltaV.y) < chaseSpeedLimits.y || (int)Mathf.Sign(rb.velocity.y * deltaV.y) == -1)
                     newVelocity += Vector2.up * (rb.velocity.y + deltaV.y);
                 else
-                    newVelocity += Vector2.up * chaseDir_Vertical * chaseSpeedLimits.y; // TODO:: need to consider vertical collisions.
+                    newVelocity += Vector2.up * chaseDir_Vertical * chaseSpeedLimits.y;
 
                 rb.velocity = newVelocity;
 
@@ -177,6 +179,10 @@ public class EnemyMovement : MonoBehaviour
 
     public void Die()
     {
+        // Detach Particle System
+        ps.transform.SetParent(transform.parent, true);
+        ps.Play();
+
         // Add floatpoints
         Instantiate(floatPoint, transform.position,Quaternion.identity);
 
@@ -186,6 +192,8 @@ public class EnemyMovement : MonoBehaviour
         // Spawn Egg
         GameObject newEgg = Instantiate(eggPrefab, transform.position, Quaternion.identity);
         newEgg.GetComponent<Rigidbody2D>().velocity = rb.velocity;
+        newEgg.GetComponent<Rigidbody2D>().gravityScale = orientation * newEgg.GetComponent<Rigidbody2D>().gravityScale;
+        newEgg.transform.localScale = new Vector2(newEgg.transform.localScale.x, orientation * newEgg.transform.localScale.y);
 
         // Cleanup
         Destroy(gameObject);
@@ -195,25 +203,40 @@ public class EnemyMovement : MonoBehaviour
     {
         if (collision.gameObject.tag.Equals("Player"))
         {
-            if ((collision.gameObject.transform.position.y - transform.position.y) > killThreshold)
-            {
-                ps.transform.SetParent(transform.parent, true);
-                ps.Play();
+            // Determine Collision State
+            int collisionState = 0;
+            float colOffset = collision.gameObject.transform.position.y - transform.position.y;
+            if (colOffset > killThreshold) //------- Player Above
+                collisionState = 1;
+            else if (colOffset < -killThreshold) //- Player Below
+                collisionState = -1;
+            else //--------------------------------- Player Even
+                collisionState = 0;
 
-                Die();
-            }
-            else if ((collision.gameObject.transform.position.y - transform.position.y) < -killThreshold)
+            // Adjust for Orientation
+            print("Collision State: " + collisionState + "\nOrientation: " + orientation);
+            collisionState *= orientation;
+
+            // Resolve Collision State
+            switch (collisionState) 
             {
-                gc.KillPlayer();
-            }
-            else if (ShouldBounce(collision.gameObject.GetComponent<Rigidbody2D>()))
-            {
-                rb.velocity = Vector2.left * rb.velocity + Vector2.up * rb.velocity;
+                case 1: // Kill Self
+                    if (collision.gameObject.GetComponent<PlayerMovement>().GetOrientation() == orientation)
+                        Die();
+                    else
+                        TryBounce(collision.gameObject.GetComponent<Rigidbody2D>());
+                    break;
+                case 0: // Bounce Off
+                    TryBounce(collision.gameObject.GetComponent<Rigidbody2D>());
+                    break;
+                case -1: // Kill Player
+                    gc.KillPlayer();
+                    break;
             }
         }
-        else if (collision.gameObject.tag == "Enemy" && ShouldBounce(collision.gameObject.GetComponent<Rigidbody2D>()))
+        else if (collision.gameObject.tag == "Enemy")
         {
-            rb.velocity = Vector2.left * rb.velocity + Vector2.up * rb.velocity;
+            TryBounce(collision.gameObject.GetComponent<Rigidbody2D>());
         }
     }
 
@@ -222,6 +245,17 @@ public class EnemyMovement : MonoBehaviour
         int xOffset = (int)Mathf.Sign(other.transform.position.x - transform.position.x);
         int newDir = (int)Mathf.Sign(-rb.velocity.x);
         return xOffset != newDir;
+    }
+
+    private void Bounce() 
+    {
+        rb.velocity = new Vector2(-rb.velocity.x, rb.velocity.y);
+    }
+
+    private void TryBounce(Rigidbody2D other) 
+    {
+        if (ShouldBounce(other))
+            Bounce();
     }
 }
 

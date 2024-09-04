@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -8,6 +9,7 @@ public class PlayerMovement : MonoBehaviour
     private Vector2 moveVector = Vector2.zero;
     private Rigidbody2D rb = null;
     private AudioController ac;
+    private GameController gc;
     public float moveSpeed = 0;
     public int rightClickCount = 1;
     public int leftClickCount = 1;
@@ -16,6 +18,7 @@ public class PlayerMovement : MonoBehaviour
     private bool breaks = false;
     public float breakSpeed = 10;
     public bool isCollision = false;
+    private int orientation = 1; // 1 is right-side up, -1 is upside-down
 
     public float bounceForce = 5;
 
@@ -35,6 +38,7 @@ public class PlayerMovement : MonoBehaviour
         input = new CustomInputs();
         rb = GetComponent<Rigidbody2D>();
         ac = FindAnyObjectByType<AudioController>();
+        gc = GetComponent<GameController>();
     }
 
     private void OnEnable()
@@ -43,7 +47,7 @@ public class PlayerMovement : MonoBehaviour
         input.Player.Movement.started += OnMovementStarted;
         input.Player.Movement.performed += OnMovementPerformed;
         input.Player.Movement.canceled += OnMovementCancled;
-        //input.Player.Gravity.performed += OnGravityPerformed;
+        input.Player.Gravity.performed += OnGravityPerformed;
         input.Player.Jump.performed += OnJumpPerformed;
     }
 
@@ -53,6 +57,7 @@ public class PlayerMovement : MonoBehaviour
         input.Player.Movement.started -= OnMovementStarted;
         input.Player.Movement.performed -= OnMovementPerformed;
         input.Player.Movement.canceled -= OnMovementCancled;
+        input.Player.Gravity.performed -= OnGravityPerformed;
         input.Player.Jump.performed -= OnJumpPerformed;
     }
 
@@ -286,8 +291,14 @@ public class PlayerMovement : MonoBehaviour
 
     private void OnGravityPerformed(InputAction.CallbackContext value)
     {
-        rb.gravityScale = -rb.gravityScale;
-        transform.Rotate(new Vector3(0, 0, 180));
+        int newOrientation = (int)Mathf.Sign(value.ReadValue<float>());
+        print(newOrientation);
+        if (newOrientation != orientation)
+        {
+            orientation = newOrientation;
+            rb.gravityScale = -rb.gravityScale;
+            transform.localScale = new Vector2(transform.localScale.x, -transform.localScale.y);
+        }
     }
 
     private void gravitySwitch()
@@ -325,57 +336,52 @@ public class PlayerMovement : MonoBehaviour
                 leftClickCount = 0;
             }
         }
-        else if (collision.gameObject.tag == "Enemy" && collision.gameObject.name.Contains("Enemy"))//(collision.gameObject.name== "Enemy 1"|| collision.gameObject.name == "Enemy 1(Clone)"))
+        else if (collision.gameObject.tag == "Enemy" && collision.gameObject.name.Contains("Enemy"))
         {
             ac.PlaySFX(ac.enemyCollide);
-            float killTreshold=collision.gameObject.GetComponent<EnemyMovement>().killThreshold;
-            float colLocation = (transform.position.y - collision.gameObject.transform.position.y);
-            if (colLocation > killTreshold)
-            {
-                /*
-                if (rightClickCount > 1)
-                {
-                    moveVector.x = -moveVector.x;
-                    //moveSpeed =-1*moveSpeed;
-                    leftClickCount = rightClickCount;
-                    rightClickCount = 0;
-                }
-                else if (leftClickCount > 1)
-                {
-                    moveVector.x = -moveVector.x;
-                    //moveSpeed = -1 * moveSpeed;
-                    rightClickCount = leftClickCount;
-                    leftClickCount = 0;
-                }
-                */
-                if (rb.gravityScale > 0)
-                {
-                    rb.velocity = new Vector2(rb.velocity.x, 0);
-                    rb.AddForce(new Vector2(0, bounceForce), ForceMode2D.Impulse);
+            float killThreshold = collision.gameObject.GetComponent<EnemyMovement>().killThreshold;
+            float colOffset = (transform.position.y - collision.gameObject.transform.position.y);
 
-                }
-                else if (rb.gravityScale < 0)
-                {
-                    rb.velocity = new Vector2(rb.velocity.x, 0);
-                    rb.AddForce(new Vector2(0, -bounceForce), ForceMode2D.Impulse);
-                }
-            }
-            if (colLocation < killTreshold && colLocation > -killTreshold && ShouldBounce(collision.gameObject.GetComponent<Rigidbody2D>()))
+            // Determine Collision State
+            int collisionState = 0;
+            if (colOffset > killThreshold) //------- Player Above
+                collisionState = 1;
+            else if (colOffset < -killThreshold) //- Player Below
+                collisionState = -1;
+            else //--------------------------------- Player Even
+                collisionState = 0;
+
+            // Adjust for Orientation
+            collisionState *= orientation;
+
+            // Resolve Collision State
+            switch (collisionState)
             {
-                if (rightClickCount > 1)
-                {
-                    moveVector.x = -moveVector.x;
-                    //moveSpeed =-1*moveSpeed;
-                    leftClickCount = rightClickCount;
-                    rightClickCount = 0;
-                }
-                else if (leftClickCount > 1)
-                {
-                    moveVector.x = -moveVector.x;
-                    //moveSpeed = -1 * moveSpeed;
-                    rightClickCount = leftClickCount;
-                    leftClickCount = 0;
-                }
+                case 1:
+                    rb.velocity = new Vector2(rb.velocity.x, 0);
+                    rb.AddForce(new Vector2(0, bounceForce * orientation), ForceMode2D.Impulse);
+                    break;
+                case 0:
+                    if (ShouldBounce(collision.gameObject.GetComponent<Rigidbody2D>()))
+                    {
+                        if (rightClickCount > 1)
+                        {
+                            moveVector.x = -moveVector.x;
+                            leftClickCount = rightClickCount;
+                            rightClickCount = 0;
+                        }
+                        else if (leftClickCount > 1)
+                        {
+                            moveVector.x = -moveVector.x;
+                            rightClickCount = leftClickCount;
+                            leftClickCount = 0;
+                        }
+                    }
+                    break;
+                case -1:
+                    rb.velocity = new Vector2(rb.velocity.x, 0);
+                    rb.AddForce(new Vector2(0, bounceForce * -orientation), ForceMode2D.Impulse);
+                    break;
             }
         }
     }
@@ -430,5 +436,10 @@ public class PlayerMovement : MonoBehaviour
         int xOffset = (int)Mathf.Sign(other.transform.position.x - transform.position.x);
         int newDir = (int)Mathf.Sign(-rb.velocity.x);
         return xOffset != newDir;
+    }
+
+    public int GetOrientation() 
+    {
+        return orientation;
     }
 }

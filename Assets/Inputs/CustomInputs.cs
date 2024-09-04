@@ -38,12 +38,12 @@ public partial class @CustomInputs : IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": ""Gravity"",
-                    ""type"": ""Button"",
+                    ""type"": ""Value"",
                     ""id"": ""4e142713-c9f0-4523-adb4-78c228039ebc"",
-                    ""expectedControlType"": ""Button"",
+                    ""expectedControlType"": ""Axis"",
                     ""processors"": """",
                     ""interactions"": """",
-                    ""initialStateCheck"": false
+                    ""initialStateCheck"": true
                 },
                 {
                     ""name"": ""Jump"",
@@ -92,7 +92,7 @@ public partial class @CustomInputs : IInputActionCollection2, IDisposable
                 {
                     ""name"": ""left"",
                     ""id"": ""a13cbe25-4fdb-46a8-b411-62faf774468d"",
-                    ""path"": ""<Keyboard>/a"",
+                    ""path"": ""<Keyboard>/leftArrow"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
@@ -103,7 +103,7 @@ public partial class @CustomInputs : IInputActionCollection2, IDisposable
                 {
                     ""name"": ""right"",
                     ""id"": ""003bb51d-9f84-4908-bac3-cdcbfe964345"",
-                    ""path"": ""<Keyboard>/d"",
+                    ""path"": ""<Keyboard>/rightArrow"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
@@ -113,25 +113,47 @@ public partial class @CustomInputs : IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": """",
-                    ""id"": ""91c4959b-c6d2-452f-9a6b-337f21edfe30"",
-                    ""path"": ""<Keyboard>/space"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Gravity"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
                     ""id"": ""e1a6f1b6-1b38-456e-8cfa-b25d6770f071"",
-                    ""path"": ""<Keyboard>/j"",
+                    ""path"": ""<Keyboard>/space"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
                     ""action"": ""Jump"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""1D Axis"",
+                    ""id"": ""1ce4dbfd-1277-42c2-88da-8bf60402fb01"",
+                    ""path"": ""1DAxis"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Gravity"",
+                    ""isComposite"": true,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""negative"",
+                    ""id"": ""c8b7079d-e6eb-4e3d-9400-f5863932e335"",
+                    ""path"": ""<Keyboard>/upArrow"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Gravity"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""positive"",
+                    ""id"": ""844dde9d-3260-4cec-9da4-b4cc5680927b"",
+                    ""path"": ""<Keyboard>/downArrow"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Gravity"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
                 }
             ]
         }

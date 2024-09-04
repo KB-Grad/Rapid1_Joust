@@ -4702,7 +4702,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3860997304711266065, guid: 9986180d8f2b608498fd90925b963a10, type: 3}
       propertyPath: jumpforce
-      value: 1.2
+      value: 1.3
       objectReference: {fileID: 0}
     - target: {fileID: 3860997304711266065, guid: 9986180d8f2b608498fd90925b963a10, type: 3}
       propertyPath: moveSpeed
@@ -4744,6 +4744,10 @@ PrefabInstance:
       propertyPath: rebornPos.Array.data[3]
       value: 
       objectReference: {fileID: 1327735977}
+    - target: {fileID: 4175226246725765426, guid: 9986180d8f2b608498fd90925b963a10, type: 3}
+      propertyPath: playerDeathParticleSystem
+      value: 
+      objectReference: {fileID: 7895487469492650577, guid: b1e1ba2b3cfd43a4083d2959acb14b95, type: 3}
     - target: {fileID: 7852074197882430088, guid: 9986180d8f2b608498fd90925b963a10, type: 3}
       propertyPath: m_Name
       value: Player

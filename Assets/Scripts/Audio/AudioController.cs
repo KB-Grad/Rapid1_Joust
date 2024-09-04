@@ -13,6 +13,7 @@ public class AudioController : MonoBehaviour
     public AudioClip gravitySwitch;
     public AudioClip enemyCollide;
     public AudioClip enemySpawn;
+    public AudioClip playerDeath;
    
 
     void Start()

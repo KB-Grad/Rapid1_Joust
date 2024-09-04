@@ -179,6 +179,7 @@ MonoBehaviour:
   gravitySwitch: {fileID: 8300000, guid: e783e79f316e07a4fb34f3784f801e19, type: 3}
   enemyCollide: {fileID: 8300000, guid: 1b47ab67a108096419b74238ca98ea66, type: 3}
   enemySpawn: {fileID: 8300000, guid: f4a2b7d11587c264081c727eaa73222c, type: 3}
+  playerDeath: {fileID: 8300000, guid: b1ac6e342e6a7b240901b8d992a2eb69, type: 3}
 --- !u!1 &8947092913515243061
 GameObject:
   m_ObjectHideFlags: 0
