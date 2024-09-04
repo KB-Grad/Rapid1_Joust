@@ -1066,6 +1066,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 62dac6a96f0e4974abaa8ef36b21b23a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  score: {fileID: 1573697487}
 --- !u!1 &718088311
 GameObject:
   m_ObjectHideFlags: 0
@@ -1554,7 +1555,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 1034000
+  m_text: 00000000
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: dc36b3fdc14f47ebb36fd484a67e268a, type: 2}
   m_sharedMaterial: {fileID: 2140032, guid: dc36b3fdc14f47ebb36fd484a67e268a, type: 2}

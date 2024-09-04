@@ -48,6 +48,7 @@ public class GameController : MonoBehaviour
     void scoreBoard()
     {
         scoreText.text = score.ToString();
+        PlayerPrefs.SetFloat("Score", score);
     }
 
     void reborn()
