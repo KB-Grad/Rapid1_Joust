@@ -192,7 +192,6 @@ public class EnemyMovement : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        print(collision.gameObject.name);
         if (collision.gameObject.tag.Equals("Player"))
         {
             if ((collision.gameObject.transform.position.y - transform.position.y) > killThreshold)
@@ -206,13 +205,13 @@ public class EnemyMovement : MonoBehaviour
             {
                 gc.KillPlayer();
             }
-            else
+            else if ((int)Mathf.Sign(collision.gameObject.GetComponent<Rigidbody2D>().velocity.x * rb.velocity.x) == -1)
             {
                 rb.velocity = Vector2.left * rb.velocity + Vector2.up * rb.velocity;
             }
         }
         else if (collision.gameObject.tag == "Enemy" && 
-            Mathf.Sign(collision.gameObject.GetComponent<Rigidbody2D>().velocity.x * GetComponent<Rigidbody2D>().velocity.x) == -1)
+            Mathf.Sign(collision.gameObject.GetComponent<Rigidbody2D>().velocity.x * rb.velocity.x) == -1)
         {
             rb.velocity = Vector2.left * rb.velocity + Vector2.up * rb.velocity;
         }

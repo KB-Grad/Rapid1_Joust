@@ -21,8 +21,7 @@ public class StartGame : MonoBehaviour
 
     public void ReStartMenu()
     {
-        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex - 2);
-
-
+        SceneManager.LoadScene(0);
+        print("Restart");
     }
 }

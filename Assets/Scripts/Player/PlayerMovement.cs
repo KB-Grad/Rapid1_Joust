@@ -29,7 +29,7 @@ public class PlayerMovement : MonoBehaviour
     private Coroutine slowDownCoroutine;
 
     //add animator
-    Animator Animator;
+    [SerializeField] Animator Animator;
     public bool mirror = false;
 
 
@@ -37,7 +37,6 @@ public class PlayerMovement : MonoBehaviour
     {
         input = new CustomInputs();
         rb = GetComponent<Rigidbody2D>();
-
     }
 
     private void OnEnable()
@@ -412,8 +411,6 @@ public class PlayerMovement : MonoBehaviour
         {
             Animator = GetComponent<Animator>();
         }
-
-
     }
 
     // Update is called once per frame

@@ -4898,6 +4898,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2594513402817650240}
   - component: {fileID: 7564278370965009676}
+  - component: {fileID: 9062440409514833072}
   m_Layer: 0
   m_Name: Model
   m_TagString: Untagged
@@ -4972,6 +4973,27 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!95 &9062440409514833072
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7083658643275484925}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 057aca2b8dd62504b84352a8ff9171dc, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &7852074197882430088
 GameObject:
   m_ObjectHideFlags: 0
@@ -5052,7 +5074,10 @@ MonoBehaviour:
   jumpforce: 1.15
   breakSpeed: 10
   isCollision: 0
+  bounceForce: 5
   gTimer: 0
+  Animator: {fileID: 9062440409514833072}
+  mirror: 0
 --- !u!114 &4814212362998570332
 MonoBehaviour:
   m_ObjectHideFlags: 0

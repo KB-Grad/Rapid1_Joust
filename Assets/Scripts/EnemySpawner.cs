@@ -27,7 +27,7 @@ public class EnemySpawner : MonoBehaviour
             }
             else 
             {
-                // TODO:: End Game
+                FindAnyObjectByType<GameController>().WinGame();
             }
         }
         
