@@ -7716,6 +7716,7 @@ MonoBehaviour:
   breakSpeed: 3
   isCollision: 0
   gTimer: 0
+  mirror: 0
 --- !u!50 &1060975154
 Rigidbody2D:
   serializedVersion: 4

@@ -1,6 +1,7 @@
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
+using UnityEditor.PackageManager;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -12,7 +13,7 @@ public class PlayerMovement : MonoBehaviour
     public float moveSpeed = 0;
     public int rightClickCount = 1;
     public int leftClickCount = 1;
-    public float[] speeds = {0, 5, 10, 15, 20};
+    public float[] speeds = { 0, 5, 10, 15, 20 };
     public float jumpforce = 10;
     private bool breaks = false;
     public float breakSpeed = 10;
@@ -26,9 +27,7 @@ public class PlayerMovement : MonoBehaviour
 
     //add animator
     Animator Animator;
-    bool right;
-    bool stop;
-    bool attack;
+    public bool mirror = false;
 
 
     private void Awake()
@@ -60,13 +59,19 @@ public class PlayerMovement : MonoBehaviour
     private void OnMovementStarted(InputAction.CallbackContext value)
     {
         moveVector = value.ReadValue<Vector2>();
+        //anime
+        Animator.SetBool("stop", false);
 
         if (!breaks)
         {
 
-            if (moveVector.x > 0&&rightClickCount<speeds.Length)
+            if (moveVector.x > 0 && rightClickCount < speeds.Length)
             {
                 rightClickCount++;
+                //direction
+                mirror = true;
+                SetMirror(mirror);
+
                 if (rightClickCount == 1)
                 {
                     breaks = true;
@@ -80,8 +85,12 @@ public class PlayerMovement : MonoBehaviour
                     leftClickCount = 0;
                 }
             }
-            if (moveVector.x < 0&&leftClickCount<speeds.Length)
+            if (moveVector.x < 0 && leftClickCount < speeds.Length)
             {
+                ////direction
+                mirror = false;
+                SetMirror(mirror);
+
                 leftClickCount++;
                 if (leftClickCount == 1)
                 {
@@ -126,21 +135,35 @@ public class PlayerMovement : MonoBehaviour
 
     private void OnJumpPerformed(InputAction.CallbackContext value)
     {
+
         if (rb.gravityScale > 0)
         {
             rb.velocity = new Vector2(rb.velocity.x, 0);
             rb.AddForce(new Vector2(0, jumpforce), ForceMode2D.Impulse);
+            //anime
+            Animator.SetBool("attack", true);
+            StartCoroutine(Release());
+
         }
-        else if(rb.gravityScale < 0)
+        else if (rb.gravityScale < 0)
         {
             rb.velocity = new Vector2(rb.velocity.x, 0);
             rb.AddForce(new Vector2(0, -jumpforce), ForceMode2D.Impulse);
         }
 
     }
+    IEnumerator Release()
+    {
+        yield return new WaitForSeconds(0.3f);
+        Animator.SetBool("attack", false);
+
+    }
 
     private void slowSpeed()
     {
+        //anime
+        Animator.SetBool("stop", true);
+
         if (isCollision)
         {
             moveVector.x = -moveVector.x;
@@ -185,14 +208,20 @@ public class PlayerMovement : MonoBehaviour
         moveSpeed = 0;
         while (!breaks)
         {
+            //anime
+            Animator.SetBool("stop", false);
+
+
             if (moveVector.x > 0 && rightClickCount < speeds.Length)
             {
 
                 rightClickCount++;
+
+
                 if (rightClickCount == 1)
                 {
                     rightClickCount++;
-                    
+
                     moveSpeed = speeds[rightClickCount - 1];
                     leftClickCount = 1;
 
@@ -210,7 +239,7 @@ public class PlayerMovement : MonoBehaviour
                 if (leftClickCount == 1)
                 {
                     leftClickCount++;
-                    moveSpeed= speeds[leftClickCount - 1];
+                    moveSpeed = speeds[leftClickCount - 1];
 
                     rightClickCount = 1;
 
@@ -230,7 +259,7 @@ public class PlayerMovement : MonoBehaviour
     {
 
         //moveVector = Vector2.zero; 
-        if(speedCoroutine!=null)
+        if (speedCoroutine != null)
         {
             StopCoroutine(speedCoroutine);
             speedCoroutine = null;
@@ -238,7 +267,7 @@ public class PlayerMovement : MonoBehaviour
     }
 
     private void FixedUpdate()
-    {   
+    {
         if (!breaks)
         {
             Vector2 horizontalMovement = new Vector2(moveVector.x, 0);
@@ -257,13 +286,13 @@ public class PlayerMovement : MonoBehaviour
 
     private void OnGravityPerformed(InputAction.CallbackContext value)
     {
-        rb.gravityScale = - rb.gravityScale;
+        rb.gravityScale = -rb.gravityScale;
         transform.Rotate(new Vector3(0, 0, 180));
     }
 
     private void gravitySwitch()
     {
-        if(gTimer ==6)
+        if (gTimer == 6)
         {
             rb.gravityScale = -rb.gravityScale;
             transform.Rotate(new Vector3(0, 0, 180));
@@ -276,7 +305,7 @@ public class PlayerMovement : MonoBehaviour
     {
         if (collision.gameObject.name == "Box" || collision.gameObject.tag == "Ground")
         {
-            if(breaks)
+            if (breaks)
             {
                 isCollision = true;
             }
@@ -326,7 +355,7 @@ public class PlayerMovement : MonoBehaviour
             gravitySwitch();
         }
     }
-    
+
     private void gSitchWait()
     {
 
@@ -337,13 +366,23 @@ public class PlayerMovement : MonoBehaviour
     void Start()
     {
         //add animator
-        Animator = GetComponent<Animator>();
-        
+        if (Animator == null)
+        {
+            Animator = GetComponent<Animator>();
+        }
+
+
     }
 
     // Update is called once per frame
     void Update()
     {
         Animator.SetFloat("speed", moveSpeed);
+    }
+
+    public void SetMirror(bool value)
+    {
+        // 设置Animator的Mirror属性
+        Animator.transform.localScale = new Vector3(value ? -1f : 1f, 1f, 1f);
     }
 }
