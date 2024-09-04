@@ -12,7 +12,7 @@ public class GameController : MonoBehaviour
     int enemyValue = 1;
     [SerializeField] TMP_Text scoreText;
     Transform[] healthBar = new Transform[5];
-    Vector3[] rebornPos = new Vector3[3];
+    [SerializeField] Transform[] rebornPos;
     Rigidbody2D rb;
     GameObject[] newEnemies = new GameObject[4];
     GameObject[] enemyParent = new GameObject[2];
@@ -35,12 +35,8 @@ public class GameController : MonoBehaviour
     {
         lives = 5;
         score = 0;
-        rebornPos[0] = new Vector3(-1.3f, 0.14f, 0);
-        rebornPos[1] = new Vector3(0.07f, 0.4f,0);
-        rebornPos[2] = new Vector3(1.33f, -0.18f, 0);
         enemyParent[0] = GameObject.Find("EnemyParent1");
         enemyParent[1] = GameObject.Find("EnemyParent2");
-        //rebornPos[3] = new Vector3(-2, -1, 0);
         rb = this.GetComponent<Rigidbody2D>();
         for (int i = 0; i < lives; i++)
         {
@@ -57,10 +53,10 @@ public class GameController : MonoBehaviour
 
     void reborn()
     {
-        transform.position = rebornPos[Random.Range(0,3)];
+        transform.position = rebornPos[Random.Range(0,rebornPos.Length)].position;
         //add platform respawn
-        GameObject node = Instantiate(RespawnPlatform, transform.position, Quaternion.identity);
-        StartCoroutine(DelayToDeleteRespawn(delayInSeconds, node));
+        // GameObject node = Instantiate(RespawnPlatform, transform.position, Quaternion.identity);
+        // StartCoroutine(DelayToDeleteRespawn(delayInSeconds, node));
     }
 
     IEnumerator DelayToDeleteRespawn(float delayInSeconds, GameObject node)

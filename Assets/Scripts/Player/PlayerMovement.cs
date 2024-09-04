@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 using Unity.VisualScripting;
 using UnityEditor.PackageManager;
 using UnityEngine;
@@ -18,6 +19,8 @@ public class PlayerMovement : MonoBehaviour
     private bool breaks = false;
     public float breakSpeed = 10;
     public bool isCollision = false;
+
+    public float bounceForce = 5;
 
     public int gTimer = 0;
     private float timeElapsed = 0f;
@@ -325,27 +328,66 @@ public class PlayerMovement : MonoBehaviour
                 leftClickCount = 0;
             }
         }
-        if (collision.gameObject.tag == "Enemy")
+        if (collision.gameObject.tag == "Enemy" && (collision.gameObject.name== "Enemy 1"|| collision.gameObject.name == "Enemy 1(Clone)"))
         {
 
-            if (rightClickCount > 1)
+            float killTreshold=collision.gameObject.GetComponent<EnemyMovement>().killThreshold;
+            float colLocation = (transform.position.y - collision.gameObject.transform.position.y);
+            if (colLocation > killTreshold)
             {
-                moveVector.x = -moveVector.x;
-                //moveSpeed =-1*moveSpeed;
-                leftClickCount = rightClickCount;
-                rightClickCount = 0;
+                if (rightClickCount > 1)
+                {
+                    moveVector.x = -moveVector.x;
+                    //moveSpeed =-1*moveSpeed;
+                    leftClickCount = rightClickCount;
+                    rightClickCount = 0;
+                }
+                else if (leftClickCount > 1)
+                {
+                    moveVector.x = -moveVector.x;
+                    //moveSpeed = -1 * moveSpeed;
+                    rightClickCount = leftClickCount;
+                    leftClickCount = 0;
+                }
+                if (rb.gravityScale > 0)
+                {
+                    rb.velocity = new Vector2(rb.velocity.x, 0);
+                    rb.AddForce(new Vector2(0, bounceForce), ForceMode2D.Impulse);
+
+                }
+                else if (rb.gravityScale < 0)
+                {
+                    rb.velocity = new Vector2(rb.velocity.x, 0);
+                    rb.AddForce(new Vector2(0, -bounceForce), ForceMode2D.Impulse);
+                }
             }
-            else if (leftClickCount > 1)
+            if (colLocation < killTreshold && colLocation > -killTreshold)
             {
-                moveVector.x = -moveVector.x;
-                //moveSpeed = -1 * moveSpeed;
-                rightClickCount = leftClickCount;
-                leftClickCount = 0;
+                if (rightClickCount > 1)
+                {
+                    moveVector.x = -moveVector.x;
+                    //moveSpeed =-1*moveSpeed;
+                    leftClickCount = rightClickCount;
+                    rightClickCount = 0;
+                }
+                else if (leftClickCount > 1)
+                {
+                    moveVector.x = -moveVector.x;
+                    //moveSpeed = -1 * moveSpeed;
+                    rightClickCount = leftClickCount;
+                    leftClickCount = 0;
+                }
             }
         }
-
     }
 
+    public void resetPlayer()
+    {
+        moveVector = Vector3.zero;
+        moveSpeed = 0;
+        leftClickCount = 1;
+        rightClickCount = 1;
+    }
 
     private void OnTriggerEnter2D(Collider2D collision)
     {

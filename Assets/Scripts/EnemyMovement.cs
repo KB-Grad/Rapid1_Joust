@@ -35,8 +35,9 @@ public class EnemyMovement : MonoBehaviour
     [SerializeField][Range(0, 30)] float wanderDelay_UpperBound = 10f;
     [SerializeField][Range(0, 30)] float wanderDelay_LowerBound = 7f;
     float wanderTimer = 0f;
-    [SerializeField]float killThreshold = .05f;
+    public float killThreshold = .05f;
     [SerializeField] bool DEBUG_doDie = false;
+
 
 
     //add Floatpoints
@@ -94,7 +95,6 @@ public class EnemyMovement : MonoBehaviour
                 if (wanderTimer <= 0)
                 {
                     wanderDir_Vertical = UnityEngine.Random.Range(-1, 2);
-                    print(wanderDir_Vertical);
                     wanderTimer = UnityEngine.Random.Range(wanderDelay_LowerBound, wanderDelay_UpperBound);
                 }
                 else
@@ -145,7 +145,7 @@ public class EnemyMovement : MonoBehaviour
 
             case EnemyState.CHASE: // ----------------------- CHASE STATE -----------------------
                 dir_Horizontal = (int)Mathf.Sign(player.transform.position.x - transform.position.x);
-                int chaseDir_Vertical = (int)Mathf.Sign(player.transform.position.y - transform.position.y);
+                int chaseDir_Vertical = (int)Mathf.Sign(player.transform.position.y + (Mathf.Sign(transform.localScale.y) * killThreshold * 2) - transform.position.y);
 
                 deltaV = new Vector2(dir_Horizontal, chaseDir_Vertical) * // get the wander direction
                     (isGrounded ? groundAccelleration : airAccelleration) * // multiply it by the relevant acceleration
@@ -192,9 +192,9 @@ public class EnemyMovement : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if (collision.gameObject.tag == "Player")
+        print(collision.gameObject.name);
+        if (collision.gameObject.tag.Equals("Player"))
         {
-            print(collision.gameObject.transform.position.y - transform.position.y);
             if ((collision.gameObject.transform.position.y - transform.position.y) > killThreshold)
             {
                 ps.transform.SetParent(transform.parent, true);
@@ -202,15 +202,20 @@ public class EnemyMovement : MonoBehaviour
 
                 Die();
             }
-            else if ((collision.gameObject.transform.position.y - transform.position.y) < killThreshold)
+            else if ((collision.gameObject.transform.position.y - transform.position.y) < -killThreshold)
             {
                 gc.KillPlayer();
             }
-            else 
+            else
             {
                 rb.velocity = Vector2.left * rb.velocity + Vector2.up * rb.velocity;
             }
-        } 
+        }
+        else if (collision.gameObject.tag == "Enemy" && 
+            Mathf.Sign(collision.gameObject.GetComponent<Rigidbody2D>().velocity.x * GetComponent<Rigidbody2D>().velocity.x) == -1)
+        {
+            rb.velocity = Vector2.left * rb.velocity + Vector2.up * rb.velocity;
+        }
     }
 }
 
