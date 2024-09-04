@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 using UnityEngine;
 using UnityEngine.UIElements;
 
@@ -205,16 +206,22 @@ public class EnemyMovement : MonoBehaviour
             {
                 gc.KillPlayer();
             }
-            else if ((int)Mathf.Sign(collision.gameObject.GetComponent<Rigidbody2D>().velocity.x * rb.velocity.x) == -1)
+            else if (ShouldBounce(collision.gameObject.GetComponent<Rigidbody2D>()))
             {
                 rb.velocity = Vector2.left * rb.velocity + Vector2.up * rb.velocity;
             }
         }
-        else if (collision.gameObject.tag == "Enemy" && 
-            Mathf.Sign(collision.gameObject.GetComponent<Rigidbody2D>().velocity.x * rb.velocity.x) == -1)
+        else if (collision.gameObject.tag == "Enemy" && ShouldBounce(collision.gameObject.GetComponent<Rigidbody2D>()))
         {
             rb.velocity = Vector2.left * rb.velocity + Vector2.up * rb.velocity;
         }
+    }
+
+    private bool ShouldBounce(Rigidbody2D other) 
+    {
+        int xOffset = (int)Mathf.Sign(other.transform.position.x - transform.position.x);
+        int newDir = (int)Mathf.Sign(-rb.velocity.x);
+        return xOffset != newDir;
     }
 }
 

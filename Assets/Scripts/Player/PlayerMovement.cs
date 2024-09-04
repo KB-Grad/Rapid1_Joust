@@ -1,8 +1,4 @@
 ﻿using System.Collections;
-using System.Collections.Generic;
-using System.Runtime.CompilerServices;
-using Unity.VisualScripting;
-using UnityEditor.PackageManager;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -11,6 +7,7 @@ public class PlayerMovement : MonoBehaviour
     private CustomInputs input = null;
     private Vector2 moveVector = Vector2.zero;
     private Rigidbody2D rb = null;
+    private AudioController ac;
     public float moveSpeed = 0;
     public int rightClickCount = 1;
     public int leftClickCount = 1;
@@ -37,6 +34,7 @@ public class PlayerMovement : MonoBehaviour
     {
         input = new CustomInputs();
         rb = GetComponent<Rigidbody2D>();
+        ac = FindAnyObjectByType<AudioController>();
     }
 
     private void OnEnable()
@@ -327,13 +325,14 @@ public class PlayerMovement : MonoBehaviour
                 leftClickCount = 0;
             }
         }
-        if (collision.gameObject.tag == "Enemy" && (collision.gameObject.name== "Enemy 1"|| collision.gameObject.name == "Enemy 1(Clone)"))
+        else if (collision.gameObject.tag == "Enemy" && collision.gameObject.name.Contains("Enemy"))//(collision.gameObject.name== "Enemy 1"|| collision.gameObject.name == "Enemy 1(Clone)"))
         {
-
+            ac.PlaySFX(ac.enemyCollide);
             float killTreshold=collision.gameObject.GetComponent<EnemyMovement>().killThreshold;
             float colLocation = (transform.position.y - collision.gameObject.transform.position.y);
             if (colLocation > killTreshold)
             {
+                /*
                 if (rightClickCount > 1)
                 {
                     moveVector.x = -moveVector.x;
@@ -348,6 +347,7 @@ public class PlayerMovement : MonoBehaviour
                     rightClickCount = leftClickCount;
                     leftClickCount = 0;
                 }
+                */
                 if (rb.gravityScale > 0)
                 {
                     rb.velocity = new Vector2(rb.velocity.x, 0);
@@ -360,7 +360,7 @@ public class PlayerMovement : MonoBehaviour
                     rb.AddForce(new Vector2(0, -bounceForce), ForceMode2D.Impulse);
                 }
             }
-            if (colLocation < killTreshold && colLocation > -killTreshold)
+            if (colLocation < killTreshold && colLocation > -killTreshold && ShouldBounce(collision.gameObject.GetComponent<Rigidbody2D>()))
             {
                 if (rightClickCount > 1)
                 {
@@ -423,5 +423,12 @@ public class PlayerMovement : MonoBehaviour
     {
         // 设置Animator的Mirror属性
         Animator.transform.localScale = new Vector3(value ? -1f : 1f, 1f, 1f);
+    }
+
+    private bool ShouldBounce(Rigidbody2D other)
+    {
+        int xOffset = (int)Mathf.Sign(other.transform.position.x - transform.position.x);
+        int newDir = (int)Mathf.Sign(-rb.velocity.x);
+        return xOffset != newDir;
     }
 }

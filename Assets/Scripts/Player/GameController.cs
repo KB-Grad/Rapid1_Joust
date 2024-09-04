@@ -9,7 +9,6 @@ public class GameController : MonoBehaviour
 {
     [SerializeField] int lives;
     [SerializeField] float score;
-    int enemyValue = 1;
     [SerializeField] TMP_Text scoreText;
     Transform[] healthBar = new Transform[5];
     [SerializeField] Transform[] rebornPos;
@@ -71,7 +70,7 @@ public class GameController : MonoBehaviour
     public void AddScore(float newScore) 
     {
         score += newScore;
-        print("up");
+        //print("up");
     }
 
     public void KillPlayer() 

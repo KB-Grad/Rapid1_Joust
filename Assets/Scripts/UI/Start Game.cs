@@ -10,7 +10,8 @@ public class StartGame : MonoBehaviour
 
     public void Start()
     {
-        score.text = PlayerPrefs.GetFloat("Score").ToString("00000000");
+        if (score != null)
+            score.text = PlayerPrefs.GetFloat("Score").ToString("00000000");
     }
 
     public void StartMenu()

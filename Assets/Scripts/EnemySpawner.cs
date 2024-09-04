@@ -61,7 +61,7 @@ public class EnemySpawner : MonoBehaviour
             else 
             {
                 spawnTimer -= Time.deltaTime;
-                print(spawnTimer);
+                //print(spawnTimer);
             }
         }
     }
