@@ -14,7 +14,9 @@ public class EnemySpawner : MonoBehaviour
     Wave currentWave = null;
     [SerializeField] float spawnDelay = .5f;
     float spawnTimer = 0f;
-    GameObject temp = null;
+    //List<GameObject> temp = new List<GameObject>();
+    GameObject[] temp = new GameObject[10];
+    int j = 0;
 
 
     // Update is called once per frame
@@ -41,7 +43,6 @@ public class EnemySpawner : MonoBehaviour
             {
                 if (currentWave.enemies.Count > 0)
                 {
-                    int i = 0;
                     // Pick the next spawn location
                     Transform spawnPoint;
                     do
@@ -51,16 +52,18 @@ public class EnemySpawner : MonoBehaviour
                     lastSpawnPoint = spawnPoint;
 
                     // Spawn the enemy
-                    temp = Instantiate(currentWave.enemies[0], spawnPoint.position, Quaternion.identity);
-                    temp.GetComponent<Rigidbody2D>().constraints = RigidbodyConstraints2D.FreezeAll;
+                    temp[j] = Instantiate(currentWave.enemies[0], spawnPoint.position, Quaternion.identity);
+                    temp[j].GetComponent<Rigidbody2D>().constraints = RigidbodyConstraints2D.FreezeAll;
+                    //There should be an animation
                     Invoke("delay", 3);
-                    //temp.GetComponent<Rigidbody2D>().constraints = RigidbodyConstraints2D.FreezeRotation;
                     currentWave.enemies.RemoveAt(0);
                     spawnTimer = spawnDelay;
+                    j++;
                 }
                 else 
                 {
                     currentWave = null;
+                    j = 0;
                 }
             }
             else 
@@ -73,22 +76,13 @@ public class EnemySpawner : MonoBehaviour
 
     void delay()
     {
-        temp.GetComponent<Rigidbody2D>().constraints = RigidbodyConstraints2D.FreezeRotation;
+        for(int i = 0; i < temp.Length; i++)
+        {
+            print("temp:" + temp[i]);
+            temp[i].GetComponent<Rigidbody2D>().constraints = RigidbodyConstraints2D.FreezeRotation;
+        }
     }
 
-    void enemyProjection(GameObject obj)
-    {
-        /*float delayed = Time.time;
-        obj.GetComponent<Rigidbody2D>().Sleep();
-        for (float tm = Time.time; delayed >= 300f; delayed = Time.time - tm)
-        {
-            if (delayed % 1 == 0)
-            {
-                obj.GetComponent<SpriteRenderer>().color = Color.Lerp(Color.white, Color.green, 1f);
-            }
-        }
-        obj.GetComponent<Rigidbody2D>().WakeUp();*/
-    }
 
     [System.Serializable]
     private class Wave
